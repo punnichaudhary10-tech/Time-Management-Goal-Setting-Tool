@@ -9,17 +9,29 @@
 
 <body>
 
-    <h2>Login</h2>
+    <div class="login-container">
 
-    <form>
-        <input type="text" id="email" placeholder="Email">
-        <br><br>
+        <h2>Welcome Back</h2>
 
-        <input type="password" id="password" placeholder="Password">
-        <br><br>
+        <p>Login to manage your goals and time</p>
 
-        <button type="submit">Login</button>
-    </form>
+        <form>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+
+        </form>
+
+    </div>
 
     <script src="../js/login.js"></script>
 
