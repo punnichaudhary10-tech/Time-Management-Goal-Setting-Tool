@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Time Management Tool</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <!-- ===================================== -->
+    <!-- MAIN DASHBOARD CONTAINER -->
+    <!-- ===================================== -->
+
+    <div class="dashboard-container">
+
+
+        <!-- ===================================== -->
+        <!-- SIDEBAR -->
+        <!-- ===================================== -->
+
+        <aside class="sidebar">
+
+            <h2>Time Management Tool</h2>
+
+            <nav>
+
+                <ul>
+
+                    <li>
+                        <a href="dashboard.html">
+                            🏠 Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="goals.html">
+                            🎯 My Goals
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="time-tracking.html">
+                            ⏱ Time Tracking
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="progress.html">
+                            📊 Progress
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="profile.html">
+                            👤 Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="login.html">
+                            🚪 Logout
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- ===================================== -->
+        <!-- MAIN CONTENT -->
+        <!-- ===================================== -->
+
+        <main class="main-content">
+
+
+            <!-- HEADER -->
+
+            <header class="dashboard-header">
+
+                <div>
+
+                    <h1>Dashboard</h1>
+
+                    <p>
+                        Welcome back, User! 👋
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <p>
+                        Today: 2 October 2026
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- ===================================== -->
+            <!-- WELCOME MESSAGE -->
+            <!-- ===================================== -->
+
+            <section class="welcome-section">
+
+                <h2>
+                    Stay focused and achieve your goals.
+                </h2>
+
+                <p>
+                    Manage your goals, track your time, and monitor
+                    your progress from one place.
+                </p>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- SUMMARY CARDS -->
+            <!-- ===================================== -->
+
+            <section class="summary-section">
+
+                <h2>Overview</h2>
+
+                <div class="summary-cards">
+
+
+                    <!-- Total Goals -->
+
+                    <div class="summary-card">
+
+                        <h3>🎯 Total Goals</h3>
+
+                        <p>5</p>
+
+                        <span>
+                            Goals created
+                        </span>
+
+                    </div>
+
+
+                    <!-- Completed Goals -->
+
+                    <div class="summary-card">
+
+                        <h3>✅ Completed</h3>
+
+                        <p>2</p>
+
+                        <span>
+                            Goals completed
+                        </span>
+
+                    </div>
+
+
+                    <!-- Time Tracked -->
+
+                    <div class="summary-card">
+
+                        <h3>⏱ Time Tracked</h3>
+
+                        <p>12.5 hrs</p>
+
+                        <span>
+                            Total time
+                        </span>
+
+                    </div>
+
+
+                    <!-- Overall Progress -->
+
+                    <div class="summary-card">
+
+                        <h3>📊 Progress</h3>
+
+                        <p>70%</p>
+
+                        <span>
+                            Overall progress
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- QUICK ACTIONS -->
+            <!-- ===================================== -->
+
+            <section class="quick-actions">
+
+                <h2>Quick Actions</h2>
+
+                <button>
+                    + Add Goal
+                </button>
+
+                <button>
+                    + Log Time
+                </button>
+
+                <button>
+                    View Progress
+                </button>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- MY GOALS -->
+            <!-- ===================================== -->
+
+            <section class="goals-section">
+
+                <div class="section-header">
+
+                    <h2>My Goals</h2>
+
+                    <button>
+                        + Add Goal
+                    </button>
+
+                </div>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Goal</th>
+
+                            <th>Target</th>
+
+                            <th>Deadline</th>
+
+                            <th>Progress</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>Learn Java</td>
+
+                            <td>Complete 5 topics</td>
+
+                            <td>15 Oct 2026</td>
+
+                            <td>70%</td>
+
+                            <td>In Progress</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>Complete Project</td>
+
+                            <td>Finish frontend</td>
+
+                            <td>20 Oct 2026</td>
+
+                            <td>50%</td>
+
+                            <td>In Progress</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>Exercise</td>
+
+                            <td>30 sessions</td>
+
+                            <td>10 Oct 2026</td>
+
+                            <td>100%</td>
+
+                            <td>Completed</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- TIME TRACKING -->
+            <!-- ===================================== -->
+
+            <section class="time-section">
+
+                <div class="section-header">
+
+                    <h2>Recent Time Logs</h2>
+
+                    <button>
+                        + Log Time
+                    </button>
+
+                </div>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Goal</th>
+
+                            <th>Date</th>
+
+                            <th>Start Time</th>
+
+                            <th>End Time</th>
+
+                            <th>Duration</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>Learn Java</td>
+
+                            <td>2 Oct 2026</td>
+
+                            <td>10:00 AM</td>
+
+                            <td>11:30 AM</td>
+
+                            <td>1h 30m</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>Complete Project</td>
+
+                            <td>2 Oct 2026</td>
+
+                            <td>2:00 PM</td>
+
+                            <td>4:00 PM</td>
+
+                            <td>2h</td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>Exercise</td>
+
+                            <td>1 Oct 2026</td>
+
+                            <td>6:00 PM</td>
+
+                            <td>7:00 PM</td>
+
+                            <td>1h</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- PROGRESS MONITORING -->
+            <!-- ===================================== -->
+
+            <section class="progress-section">
+
+                <h2>Goal Progress</h2>
+
+
+                <!-- Goal 1 -->
+
+                <div class="progress-item">
+
+                    <div>
+
+                        <span>Learn Java</span>
+
+                        <span>70%</span>
+
+                    </div>
+
+                    <progress value="70" max="100"></progress>
+
+                </div>
+
+
+                <!-- Goal 2 -->
+
+                <div class="progress-item">
+
+                    <div>
+
+                        <span>Complete Project</span>
+
+                        <span>50%</span>
+
+                    </div>
+
+                    <progress value="50" max="100"></progress>
+
+                </div>
+
+
+                <!-- Goal 3 -->
+
+                <div class="progress-item">
+
+                    <div>
+
+                        <span>Exercise</span>
+
+                        <span>100%</span>
+
+                    </div>
+
+                    <progress value="100" max="100"></progress>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================== -->
+            <!-- RECENT ACTIVITY -->
+            <!-- ===================================== -->
+
+            <section class="activity-section">
+
+                <h2>Recent Activity</h2>
+
+                <ul>
+
+                    <li>
+                        ✅ Completed "HTML Basics"
+                    </li>
+
+                    <li>
+                        ⏱ Logged 2 hours for "Complete Project"
+                    </li>
+
+                    <li>
+                        🎯 Created new goal "Learn JavaScript"
+                    </li>
+
+                    <li>
+                        📊 Updated progress for "Learn Java"
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
