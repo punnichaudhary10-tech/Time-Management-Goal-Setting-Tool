@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
+//cd Time-Management-Goal-Setting-Tool
+//cd src
+//java -cp ".;../lib/mysql-connector-j-26.7.0.jar" server.WebServer
 public class WebServer {
 
     public static void main(String[] args) throws IOException {
