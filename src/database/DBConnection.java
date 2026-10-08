@@ -6,8 +6,8 @@ import java.sql.DriverManager;
 public class DBConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/time_management_db";
-    private static final String USER = "root";
-    private static final String PASSWORD = "Pu01*11*2006";
+    private static final String USER = "time_app";
+    private static final String PASSWORD = "gdgy276243pcv.ed,rh3794";
 
     public static Connection getConnection() {
         try {
