@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Monitoring - Time Management & Goal Setting Tool</title>
+
+    <link rel="stylesheet" href="../css/progress.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo-section">
+            <div class="logo-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+
+            <div>
+                <h2>TimeTrack</h2>
+                <span>Goal Management</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-title">MAIN MENU</p>
+
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="goals.html" class="nav-item">
+                <i class="fas fa-bullseye"></i>
+                <span>My Goals</span>
+            </a>
+
+            <a href="time-tracking.html" class="nav-item">
+                <i class="fas fa-stopwatch"></i>
+                <span>Time Tracking</span>
+            </a>
+
+            <a href="progress.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress</span>
+            </a>
+
+            <p class="nav-title">ACCOUNT</p>
+
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+
+            <a href="login.html" class="nav-item logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="productivity-box">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <strong>Stay Consistent!</strong>
+                    <p>Small progress every day leads to big results.</p>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="top-header">
+
+            <div>
+                <h1>Progress Monitoring</h1>
+                <p>Track your goals and see how far you have come.</p>
+            </div>
+
+            <div class="header-actions">
+
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="user-profile">
+                    <div class="avatar">P</div>
+
+                    <div class="user-info">
+                        <strong>Palak</strong>
+                        <span>User</span>
+                    </div>
+
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Overall Progress -->
+        <section class="overall-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Overall Progress</h2>
+                    <p>Your productivity overview across all goals.</p>
+                </div>
+
+                <select class="period-select">
+                    <option>This Week</option>
+                    <option>This Month</option>
+                    <option>Last 3 Months</option>
+                    <option>This Year</option>
+                </select>
+            </div>
+
+
+            <div class="progress-summary">
+
+                <div class="summary-card">
+                    <div class="summary-icon blue">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+
+                    <div>
+                        <span>Total Goals</span>
+                        <h3>8</h3>
+                        <small>All active goals</small>
+                    </div>
+                </div>
+
+
+                <div class="summary-card">
+                    <div class="summary-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+
+                    <div>
+                        <span>Completed</span>
+                        <h3>3</h3>
+                        <small>Goals completed</small>
+                    </div>
+                </div>
+
+
+                <div class="summary-card">
+                    <div class="summary-icon orange">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+
+                    <div>
+                        <span>In Progress</span>
+                        <h3>4</h3>
+                        <small>Currently active</small>
+                    </div>
+                </div>
+
+
+                <div class="summary-card">
+                    <div class="summary-icon purple">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+
+                    <div>
+                        <span>Average Progress</span>
+                        <h3>68%</h3>
+                        <small>Across all goals</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Progress Overview -->
+        <section class="content-grid">
+
+            <!-- Overall Progress Card -->
+            <div class="card progress-overview">
+
+                <div class="card-header">
+                    <div>
+                        <h2>Goal Completion</h2>
+                        <p>Overall completion percentage</p>
+                    </div>
+
+                    <i class="fas fa-chart-pie header-icon"></i>
+                </div>
+
+                <div class="completion-container">
+
+                    <div class="circle-progress">
+                        <div class="circle-inner">
+                            <strong>68%</strong>
+                            <span>Completed</span>
+                        </div>
+                    </div>
+
+                    <div class="completion-details">
+
+                        <div class="completion-item">
+                            <span>
+                                <i class="fas fa-circle completed-dot"></i>
+                                Completed
+                            </span>
+                            <strong>3 Goals</strong>
+                        </div>
+
+                        <div class="completion-item">
+                            <span>
+                                <i class="fas fa-circle progress-dot"></i>
+                                In Progress
+                            </span>
+                            <strong>4 Goals</strong>
+                        </div>
+
+                        <div class="completion-item">
+                            <span>
+                                <i class="fas fa-circle pending-dot"></i>
+                                Not Started
+                            </span>
+                            <strong>1 Goal</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Weekly Activity -->
+            <div class="card weekly-progress">
+
+                <div class="card-header">
+                    <div>
+                        <h2>Weekly Progress</h2>
+                        <p>Your productivity this week</p>
+                    </div>
+
+                    <i class="fas fa-calendar-week header-icon"></i>
+                </div>
+
+                <div class="weekly-chart">
+
+                    <div class="chart-row">
+                        <span>Mon</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 75%;"></div>
+                        </div>
+                        <strong>75%</strong>
+                    </div>
+
+                    <div class="chart-row">
+                        <span>Tue</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 85%;"></div>
+                        </div>
+                        <strong>85%</strong>
+                    </div>
+
+                    <div class="chart-row">
+                        <span>Wed</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 60%;"></div>
+                        </div>
+                        <strong>60%</strong>
+                    </div>
+
+                    <div class="chart-row">
+                        <span>Thu</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 90%;"></div>
+                        </div>
+                        <strong>90%</strong>
+                    </div>
+
+                    <div class="chart-row">
+                        <span>Fri</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 70%;"></div>
+                        </div>
+                        <strong>70%</strong>
+                    </div>
+
+                    <div class="chart-row">
+                        <span>Sat</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 50%;"></div>
+                        </div>
+                        <strong>50%</strong>
+                    </div>
+
+                    <div class="chart-row">
+                        <span>Sun</span>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 40%;"></div>
+                        </div>
+                        <strong>40%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Individual Goals -->
+        <section class="card goals-progress">
+
+            <div class="card-header">
+                <div>
+                    <h2>Goal Progress</h2>
+                    <p>Detailed progress for each personal goal.</p>
+                </div>
+
+                <a href="goals.html" class="view-goals">
+                    Manage Goals
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+
+            <div class="goal-list">
+
+                <!-- Goal 1 -->
+                <div class="goal-progress-item">
+
+                    <div class="goal-info">
+                        <div class="goal-icon blue">
+                            <i class="fas fa-code"></i>
+                        </div>
+
+                        <div>
+                            <h3>Complete Java Project</h3>
+                            <span>Technical Learning</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-progress-bar">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <strong>85%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill blue-fill"
+                                 style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <span class="status-badge almost">
+                        Almost Complete
+                    </span>
+
+                </div>
+
+
+                <!-- Goal 2 -->
+                <div class="goal-progress-item">
+
+                    <div class="goal-info">
+                        <div class="goal-icon green">
+                            <i class="fas fa-book"></i>
+                        </div>
+
+                        <div>
+                            <h3>Study Database Management</h3>
+                            <span>Academic</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-progress-bar">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <strong>70%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill green-fill"
+                                 style="width: 70%;"></div>
+                        </div>
+                    </div>
+
+                    <span class="status-badge active">
+                        In Progress
+                    </span>
+
+                </div>
+
+
+                <!-- Goal 3 -->
+                <div class="goal-progress-item">
+
+                    <div class="goal-info">
+                        <div class="goal-icon orange">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+
+                        <div>
+                            <h3>Daily Fitness Routine</h3>
+                            <span>Health & Fitness</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-progress-bar">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <strong>55%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill orange-fill"
+                                 style="width: 55%;"></div>
+                        </div>
+                    </div>
+
+                    <span class="status-badge active">
+                        In Progress
+                    </span>
+
+                </div>
+
+
+                <!-- Goal 4 -->
+                <div class="goal-progress-item">
+
+                    <div class="goal-info">
+                        <div class="goal-icon purple">
+                            <i class="fas fa-language"></i>
+                        </div>
+
+                        <div>
+                            <h3>Learn Spanish</h3>
+                            <span>Personal Development</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-progress-bar">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <strong>35%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill purple-fill"
+                                 style="width: 35%;"></div>
+                        </div>
+                    </div>
+
+                    <span class="status-badge started">
+                        Started
+                    </span>
+
+                </div>
+
+
+                <!-- Goal 5 -->
+                <div class="goal-progress-item">
+
+                    <div class="goal-info">
+                        <div class="goal-icon teal">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+
+                        <div>
+                            <h3>Complete Assignment</h3>
+                            <span>Academic</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-progress-bar">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <strong>100%</strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill teal-fill"
+                                 style="width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <span class="status-badge completed">
+                        Completed
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Bottom Grid -->
+        <section class="bottom-grid">
+
+            <!-- Achievements -->
+            <div class="card achievements">
+
+                <div class="card-header">
+                    <div>
+                        <h2>Achievements</h2>
+                        <p>Milestones you have reached.</p>
+                    </div>
+
+                    <i class="fas fa-trophy header-icon"></i>
+                </div>
+
+
+                <div class="achievement-list">
+
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+
+                        <div>
+                            <strong>7 Day Streak</strong>
+                            <p>Stayed productive for 7 days.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+
+                        <div>
+                            <strong>Goal Crusher</strong>
+                            <p>Completed 3 personal goals.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+
+                        <div>
+                            <strong>Time Master</strong>
+                            <p>Tracked more than 20 hours.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Progress Tips -->
+            <div class="card progress-tips">
+
+                <div class="card-header">
+                    <div>
+                        <h2>Progress Tips</h2>
+                        <p>Improve your productivity.</p>
+                    </div>
+
+                    <i class="fas fa-lightbulb header-icon"></i>
+                </div>
+
+                <ul>
+
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Break large goals into smaller milestones.</span>
+                    </li>
+
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Track your time consistently every day.</span>
+                    </li>
+
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Review your progress at the end of each week.</span>
+                    </li>
+
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Focus on important goals before less important tasks.</span>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                © 2026 Time Management & Goal Setting Tool.
+                Stay focused. Stay productive.
+            </p>
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
