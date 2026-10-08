@@ -1,5 +1,10 @@
 package server;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+import user.User;
+import user.UserService;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -11,29 +16,15 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
-
-import user.UserService;
-
 public class WebServer {
 
-        private static final Path FRONTEND_PATH = Paths
-                        .get(System.getProperty("user.dir"), "frontend")
+        private static final Path FRONTEND_PATH = Paths.get("frontend")
                         .toAbsolutePath()
                         .normalize();
 
         public static void main(String[] args) throws IOException {
 
-                // Railway provides PORT.
-                // Local development uses 8080.
-                int port = 8080;
-
-                String portEnv = System.getenv("PORT");
-
-                if (portEnv != null && !portEnv.isBlank()) {
-                        port = Integer.parseInt(portEnv);
-                }
+                int port = getPort();
 
                 HttpServer server = HttpServer.create(
                                 new InetSocketAddress("0.0.0.0", port),
@@ -41,139 +32,45 @@ public class WebServer {
 
                 UserService userService = new UserService();
 
-                // =====================================================
-                // LOGIN API
-                // =====================================================
+                // ================================
+                // API ROUTES
+                // ================================
 
-                server.createContext("/login", exchange -> {
+                server.createContext(
+                                "/api/login",
+                                exchange -> handleLogin(exchange, userService));
 
-                        exchange.getResponseHeaders().set(
-                                        "Access-Control-Allow-Origin",
-                                        "*");
+                server.createContext(
+                                "/api/register",
+                                exchange -> handleRegister(exchange, userService));
 
-                        exchange.getResponseHeaders().set(
-                                        "Access-Control-Allow-Methods",
-                                        "POST, OPTIONS");
+                // ================================
+                // HTML ROUTES
+                // ================================
 
-                        exchange.getResponseHeaders().set(
-                                        "Access-Control-Allow-Headers",
-                                        "Content-Type");
+                server.createContext(
+                                "/register.html",
+                                exchange -> serveHtmlPage(exchange, "register.html"));
 
-                        // Handle browser preflight request
-                        if ("OPTIONS".equalsIgnoreCase(
-                                        exchange.getRequestMethod())) {
+                server.createContext(
+                                "/login.html",
+                                exchange -> serveHtmlPage(exchange, "login.html"));
 
-                                exchange.sendResponseHeaders(204, -1);
-                                exchange.close();
-                                return;
-                        }
+                server.createContext(
+                                "/dashboard.html",
+                                exchange -> serveHtmlPage(exchange, "dashboard.html"));
 
-                        if ("GET".equalsIgnoreCase(
-                                        exchange.getRequestMethod())) {
+                server.createContext(
+                                "/index.html",
+                                exchange -> serveHtmlPage(exchange, "index.html"));
 
-                                Path loginPage = FRONTEND_PATH
-                                                .resolve("html/login.html")
-                                                .normalize();
-
-                                byte[] fileBytes = Files.readAllBytes(loginPage);
-
-                                exchange.getResponseHeaders().set(
-                                                "Content-Type",
-                                                "text/html; charset=UTF-8");
-
-                                exchange.sendResponseHeaders(
-                                                200,
-                                                fileBytes.length);
-
-                                try (OutputStream output = exchange.getResponseBody()) {
-
-                                        output.write(fileBytes);
-                                }
-
-                                return;
-                        }
-
-                        // Only POST is allowed for login
-                        if (!"POST".equalsIgnoreCase(
-                                        exchange.getRequestMethod())) {
-
-                                sendResponse(
-                                                exchange,
-                                                405,
-                                                "Method Not Allowed");
-
-                                return;
-                        }
-
-                        try {
-
-                                String requestData = new String(
-                                                exchange.getRequestBody().readAllBytes(),
-                                                StandardCharsets.UTF_8);
-
-                                Map<String, String> formData = parseFormData(requestData);
-
-                                String email = formData.get("email");
-                                String password = formData.get("password");
-
-                                // Validate input
-                                if (email == null ||
-                                                password == null ||
-                                                email.isBlank() ||
-                                                password.isBlank()) {
-
-                                        sendResponse(
-                                                        exchange,
-                                                        400,
-                                                        "Email and Password are required");
-
-                                        return;
-                                }
-
-                                System.out.println(
-                                                "Login request received for: " + email);
-
-                                boolean result = userService.loginUser(
-                                                email,
-                                                password);
-
-                                if (result) {
-
-                                        sendResponse(
-                                                        exchange,
-                                                        200,
-                                                        "Login Successful");
-
-                                } else {
-
-                                        sendResponse(
-                                                        exchange,
-                                                        401,
-                                                        "Invalid Email or Password");
-                                }
-
-                        } catch (Exception e) {
-
-                                e.printStackTrace();
-
-                                sendResponse(
-                                                exchange,
-                                                500,
-                                                "Server Error");
-                        }
-                });
-
-                // =====================================================
-                // FRONTEND
-                // =====================================================
+                // ================================
+                // ALL OTHER FRONTEND FILES
+                // ================================
 
                 server.createContext(
                                 "/",
                                 WebServer::serveFrontend);
-
-                // =====================================================
-                // START SERVER
-                // =====================================================
 
                 server.start();
 
@@ -181,18 +78,227 @@ public class WebServer {
                 System.out.println("Web server started successfully!");
                 System.out.println("Port: " + port);
                 System.out.println("Frontend: /");
-                System.out.println("Login API: /login");
+                System.out.println("Login API: /api/login");
+                System.out.println("Register API: /api/register");
                 System.out.println("=================================");
         }
 
-        // =========================================================
-        // SERVE FRONTEND FILES
-        // =========================================================
+        // ================================
+        // PORT
+        // ================================
+
+        private static int getPort() {
+
+                String port = System.getenv("PORT");
+
+                if (port == null || port.isBlank()) {
+                        return 8080;
+                }
+
+                return Integer.parseInt(port);
+        }
+
+        // ================================
+        // LOGIN API
+        // ================================
+
+        private static void handleLogin(
+                        HttpExchange exchange,
+                        UserService userService) throws IOException {
+
+                addCorsHeaders(exchange);
+
+                if ("OPTIONS".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        exchange.sendResponseHeaders(204, -1);
+                        exchange.close();
+                        return;
+                }
+
+                if (!"POST".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
+                        return;
+                }
+
+                String requestData = readBody(exchange);
+
+                Map<String, String> formData = parseFormData(requestData);
+
+                String email = formData.get("email");
+                String password = formData.get("password");
+
+                if (isBlank(email) || isBlank(password)) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Email and Password are required");
+
+                        return;
+                }
+
+                boolean result = userService.loginUser(
+                                email.trim(),
+                                password);
+
+                if (result) {
+
+                        sendResponse(
+                                        exchange,
+                                        200,
+                                        "Login Successful");
+
+                } else {
+
+                        sendResponse(
+                                        exchange,
+                                        401,
+                                        "Invalid Email or Password");
+                }
+        }
+
+        // ================================
+        // REGISTER API
+        // ================================
+
+        private static void handleRegister(
+                        HttpExchange exchange,
+                        UserService userService) throws IOException {
+
+                addCorsHeaders(exchange);
+
+                if ("OPTIONS".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        exchange.sendResponseHeaders(204, -1);
+                        exchange.close();
+                        return;
+                }
+
+                if (!"POST".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
+                        return;
+                }
+
+                String requestData = readBody(exchange);
+
+                Map<String, String> formData = parseFormData(requestData);
+
+                String name = formData.get("name");
+                String email = formData.get("email");
+                String password = formData.get("password");
+                String confirmPassword = formData.get("confirmPassword");
+
+                // ================================
+                // VALIDATE FIELDS
+                // ================================
+
+                if (isBlank(name)
+                                || isBlank(email)
+                                || isBlank(password)
+                                || isBlank(confirmPassword)) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "All fields are required");
+
+                        return;
+                }
+
+                // ================================
+                // CHECK PASSWORD
+                // ================================
+
+                if (!password.equals(confirmPassword)) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Passwords do not match");
+
+                        return;
+                }
+
+                // ================================
+                // CREATE USER
+                // ================================
+
+                User user = new User(
+                                0,
+                                name.trim(),
+                                email.trim(),
+                                password);
+
+                // ================================
+                // SAVE USER
+                // ================================
+
+                boolean result = userService.registerUser(user);
+
+                if (result) {
+
+                        sendResponse(
+                                        exchange,
+                                        201,
+                                        "Registration Successful");
+
+                } else {
+
+                        sendResponse(
+                                        exchange,
+                                        500,
+                                        "Registration Failed");
+                }
+        }
+
+        // ================================
+        // HTML PAGE HANDLER
+        // ================================
+
+        private static void serveHtmlPage(
+                        HttpExchange exchange,
+                        String fileName) throws IOException {
+
+                if (!"GET".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
+                        return;
+                }
+
+                Path file = FRONTEND_PATH
+                                .resolve("html")
+                                .resolve(fileName)
+                                .normalize();
+
+                serveFile(exchange, file);
+        }
+
+        // ================================
+        // FRONTEND STATIC FILES
+        // ================================
 
         private static void serveFrontend(
                         HttpExchange exchange) throws IOException {
 
-                // Only GET requests are allowed
                 if (!"GET".equalsIgnoreCase(
                                 exchange.getRequestMethod())) {
 
@@ -206,80 +312,33 @@ public class WebServer {
 
                 String requestPath = exchange.getRequestURI().getPath();
 
-                /*
-                 * IMPORTANT FIX
-                 *
-                 * "/" directly maps to:
-                 *
-                 * frontend/html/index.html
-                 *
-                 * We do NOT first create "/html/index.html"
-                 * and then prepend "html/" again.
-                 */
-
                 String relativePath;
 
-                if (requestPath == null ||
-                                requestPath.equals("/")) {
+                if (requestPath == null
+                                || requestPath.equals("/")
+                                || requestPath.isBlank()) {
 
                         relativePath = "html/index.html";
 
                 } else {
 
-                        // Remove leading slash
                         relativePath = requestPath.startsWith("/")
                                         ? requestPath.substring(1)
                                         : requestPath;
 
-                        /*
-                         * HTML files:
-                         *
-                         * /login.html
-                         * ↓
-                         * frontend/html/login.html
-                         *
-                         * /dashboard.html
-                         * ↓
-                         * frontend/html/dashboard.html
-                         */
-
-                        if (relativePath.endsWith(".html") &&
-                                        !relativePath.startsWith("html/")) {
+                        // Handle HTML files
+                        if (relativePath.endsWith(".html")
+                                        && !relativePath.startsWith("html/")) {
 
                                 relativePath = "html/" + relativePath;
                         }
                 }
 
-                /*
-                 * CSS files:
-                 *
-                 * /css/style.css
-                 * ↓
-                 * frontend/css/style.css
-                 *
-                 * No modification required.
-                 */
-
-                /*
-                 * JS files:
-                 *
-                 * /js/login.js
-                 * ↓
-                 * frontend/js/login.js
-                 *
-                 * No modification required.
-                 */
-
                 Path requestedFile = FRONTEND_PATH
                                 .resolve(relativePath)
                                 .normalize();
 
-                // =====================================================
-                // SECURITY
-                // Prevent path traversal such as:
-                // /../some-file
-                // =====================================================
-
+                // Security check
                 if (!requestedFile.startsWith(
                                 FRONTEND_PATH)) {
 
@@ -291,12 +350,30 @@ public class WebServer {
                         return;
                 }
 
-                // =====================================================
-                // FILE EXISTENCE CHECK
-                // =====================================================
+                serveFile(exchange, requestedFile);
+        }
 
-                if (!Files.exists(requestedFile) ||
-                                !Files.isRegularFile(requestedFile)) {
+        // ================================
+        // FILE SERVER
+        // ================================
+
+        private static void serveFile(
+                        HttpExchange exchange,
+                        Path file) throws IOException {
+
+                if (!file.startsWith(
+                                FRONTEND_PATH)) {
+
+                        sendResponse(
+                                        exchange,
+                                        403,
+                                        "Forbidden");
+
+                        return;
+                }
+
+                if (!Files.exists(file)
+                                || !Files.isRegularFile(file)) {
 
                         sendResponse(
                                         exchange,
@@ -306,94 +383,44 @@ public class WebServer {
                         return;
                 }
 
-                // =====================================================
-                // READ FILE
-                // =====================================================
-
-                byte[] fileBytes = Files.readAllBytes(requestedFile);
-
-                // =====================================================
-                // CONTENT TYPE
-                // =====================================================
+                byte[] bytes = Files.readAllBytes(file);
 
                 exchange.getResponseHeaders().set(
                                 "Content-Type",
-                                getContentType(requestedFile));
-
-                // =====================================================
-                // SEND FILE
-                // =====================================================
+                                getContentType(file));
 
                 exchange.sendResponseHeaders(
                                 200,
-                                fileBytes.length);
+                                bytes.length);
 
                 try (OutputStream output = exchange.getResponseBody()) {
 
-                        output.write(fileBytes);
+                        output.write(bytes);
                 }
         }
 
-        // =========================================================
-        // CONTENT TYPE
-        // =========================================================
+        // ================================
+        // READ REQUEST BODY
+        // ================================
 
-        private static String getContentType(
-                        Path file) {
+        private static String readBody(
+                        HttpExchange exchange) throws IOException {
 
-                String fileName = file.getFileName()
-                                .toString()
-                                .toLowerCase();
-
-                if (fileName.endsWith(".html")) {
-                        return "text/html; charset=UTF-8";
-                }
-
-                if (fileName.endsWith(".css")) {
-                        return "text/css; charset=UTF-8";
-                }
-
-                if (fileName.endsWith(".js")) {
-                        return "application/javascript; charset=UTF-8";
-                }
-
-                if (fileName.endsWith(".json")) {
-                        return "application/json; charset=UTF-8";
-                }
-
-                if (fileName.endsWith(".png")) {
-                        return "image/png";
-                }
-
-                if (fileName.endsWith(".jpg") ||
-                                fileName.endsWith(".jpeg")) {
-
-                        return "image/jpeg";
-                }
-
-                if (fileName.endsWith(".svg")) {
-                        return "image/svg+xml";
-                }
-
-                if (fileName.endsWith(".ico")) {
-                        return "image/x-icon";
-                }
-
-                return "application/octet-stream";
+                return new String(
+                                exchange.getRequestBody().readAllBytes(),
+                                StandardCharsets.UTF_8);
         }
 
-        // =========================================================
+        // ================================
         // FORM DATA PARSER
-        // =========================================================
+        // ================================
 
         private static Map<String, String> parseFormData(
                         String data) {
 
                 Map<String, String> formData = new HashMap<>();
 
-                if (data == null ||
-                                data.isBlank()) {
-
+                if (data == null || data.isBlank()) {
                         return formData;
                 }
 
@@ -413,25 +440,54 @@ public class WebServer {
                                                 keyValue[1],
                                                 StandardCharsets.UTF_8);
 
-                                formData.put(
-                                                key,
-                                                value);
+                                formData.put(key, value);
                         }
                 }
 
                 return formData;
         }
 
-        // =========================================================
+        // ================================
+        // VALIDATION
+        // ================================
+
+        private static boolean isBlank(
+                        String value) {
+
+                return value == null
+                                || value.isBlank();
+        }
+
+        // ================================
+        // CORS
+        // ================================
+
+        private static void addCorsHeaders(
+                        HttpExchange exchange) {
+
+                exchange.getResponseHeaders().set(
+                                "Access-Control-Allow-Origin",
+                                "*");
+
+                exchange.getResponseHeaders().set(
+                                "Access-Control-Allow-Methods",
+                                "POST, OPTIONS");
+
+                exchange.getResponseHeaders().set(
+                                "Access-Control-Allow-Headers",
+                                "Content-Type");
+        }
+
+        // ================================
         // TEXT RESPONSE
-        // =========================================================
+        // ================================
 
         private static void sendResponse(
                         HttpExchange exchange,
                         int statusCode,
                         String response) throws IOException {
 
-                byte[] responseBytes = response.getBytes(
+                byte[] bytes = response.getBytes(
                                 StandardCharsets.UTF_8);
 
                 exchange.getResponseHeaders().set(
@@ -440,11 +496,55 @@ public class WebServer {
 
                 exchange.sendResponseHeaders(
                                 statusCode,
-                                responseBytes.length);
+                                bytes.length);
 
                 try (OutputStream output = exchange.getResponseBody()) {
 
-                        output.write(responseBytes);
+                        output.write(bytes);
                 }
+        }
+
+        // ================================
+        // CONTENT TYPES
+        // ================================
+
+        private static String getContentType(
+                        Path file) {
+
+                String name = file.getFileName()
+                                .toString()
+                                .toLowerCase();
+
+                if (name.endsWith(".html")) {
+                        return "text/html; charset=UTF-8";
+                }
+
+                if (name.endsWith(".css")) {
+                        return "text/css; charset=UTF-8";
+                }
+
+                if (name.endsWith(".js")) {
+                        return "application/javascript; charset=UTF-8";
+                }
+
+                if (name.endsWith(".png")) {
+                        return "image/png";
+                }
+
+                if (name.endsWith(".jpg")
+                                || name.endsWith(".jpeg")) {
+
+                        return "image/jpeg";
+                }
+
+                if (name.endsWith(".svg")) {
+                        return "image/svg+xml";
+                }
+
+                if (name.endsWith(".ico")) {
+                        return "image/x-icon";
+                }
+
+                return "application/octet-stream";
         }
 }
