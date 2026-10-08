@@ -5,6 +5,14 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
+    // <<<<<<<HEAD=======
+    // private static final String URL =
+    // "jdbc:mysql://localhost:3306/time_management_db";
+    // private static final String USER = "time_app";
+    // private static final String PASSWORD = "gdgy276243pcv.ed,rh3794";
+
+    // >>>>>>>origin/disha-work
+
     public static Connection getConnection() {
 
         try {
