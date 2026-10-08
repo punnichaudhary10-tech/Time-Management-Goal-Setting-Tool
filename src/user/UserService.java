@@ -7,71 +7,118 @@ import java.sql.ResultSet;
 
 public class UserService {
 
+    // =====================================================
+    // REGISTER USER
+    // =====================================================
+
     public boolean registerUser(User user) {
 
         String sql = "INSERT INTO users (name, email, password, role) " +
                 "VALUES (?, ?, ?, ?)";
 
-        try (
-                Connection connection = DBConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+        Connection connection = null;
 
+        try {
+
+            connection = DBConnection.getConnection();
+
+            // Check connection BEFORE using it
             if (connection == null) {
                 System.out.println("Database connection failed.");
                 return false;
             }
 
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword());
-            statement.setString(4, "USER");
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.executeUpdate();
+                statement.setString(1, user.getUsername());
+                statement.setString(2, user.getEmail());
+                statement.setString(3, user.getPassword());
+                statement.setString(4, "USER");
 
-            System.out.println("User Registered Successfully");
-            return true;
+                statement.executeUpdate();
+
+                System.out.println(
+                        "User Registered Successfully");
+
+                return true;
+            }
 
         } catch (Exception e) {
 
             System.out.println("Registration Failed");
             e.printStackTrace();
+
             return false;
+
+        } finally {
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public boolean loginUser(String email, String password) {
+    // =====================================================
+    // LOGIN USER
+    // =====================================================
+
+    public boolean loginUser(
+            String email,
+            String password) {
 
         String sql = "SELECT user_id, name, email, role " +
                 "FROM users " +
                 "WHERE email = ? AND password = ?";
 
-        try (
-                Connection connection = DBConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+        Connection connection = null;
 
+        try {
+
+            connection = DBConnection.getConnection();
+
+            // Check connection BEFORE using it
             if (connection == null) {
                 System.out.println("Database connection failed.");
                 return false;
             }
 
-            statement.setString(1, email);
-            statement.setString(2, password);
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            try (ResultSet result = statement.executeQuery()) {
+                statement.setString(1, email);
+                statement.setString(2, password);
 
-                if (result.next()) {
+                try (ResultSet result = statement.executeQuery()) {
 
-                    System.out.println("Login Successful");
-                    System.out.println("User ID: " + result.getInt("user_id"));
-                    System.out.println("Name: " + result.getString("name"));
-                    System.out.println("Role: " + result.getString("role"));
+                    if (result.next()) {
 
-                    return true;
+                        System.out.println(
+                                "Login Successful");
 
-                } else {
+                        System.out.println(
+                                "User ID: " +
+                                        result.getInt("user_id"));
 
-                    System.out.println("Invalid Email or Password");
-                    return false;
+                        System.out.println(
+                                "Name: " +
+                                        result.getString("name"));
+
+                        System.out.println(
+                                "Role: " +
+                                        result.getString("role"));
+
+                        return true;
+
+                    } else {
+
+                        System.out.println(
+                                "Invalid Email or Password");
+
+                        return false;
+                    }
                 }
             }
 
@@ -79,7 +126,18 @@ public class UserService {
 
             System.out.println("Login Failed");
             e.printStackTrace();
+
             return false;
+
+        } finally {
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
