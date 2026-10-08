@@ -5,352 +5,358 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Time Tracking | Time Management Tool</title>
+    <title>Time Tracking | TimeTrack</title>
 
-    <link
-        rel="stylesheet"
-        href="../css/time-tracking.css"
-    >
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="../css/time-tracking.css">
 
 </head>
-
 
 <body>
 
 
-<div class="page-container">
+<div class="app">
 
 
-    <!-- =========================================
-         SIDEBAR
-    ========================================== -->
+    <!-- ================= SIDEBAR ================= -->
 
     <aside class="sidebar">
 
-        <h2>Time Management Tool</h2>
+        <div class="brand">
 
-        <nav>
+            <div class="brand-icon">
+                <i class="fa-solid fa-clock"></i>
+            </div>
 
-            <ul>
+            <div>
+                <h2>TimeTrack</h2>
+                <span>Goal & Time Manager</span>
+            </div>
 
-                <li>
-                    <a href="dashboard.html">
-                         Dashboard
-                    </a>
-                </li>
+        </div>
 
-                <li>
-                    <a href="goals.html">
-                         My Goals
-                    </a>
-                </li>
 
-                <li>
-                    <a
-                        href="time-tracking.html"
-                        class="active"
-                    >
-                         Time Tracking
-                    </a>
-                </li>
+        <div class="menu-title">
+            MAIN MENU
+        </div>
 
-                <li>
-                    <a href="progress.html">
-                         Progress
-                    </a>
-                </li>
 
-                <li>
-                    <a href="profile.html">
-                         Profile
-                    </a>
-                </li>
+        <nav class="navigation">
 
-                <li>
-                    <a href="login.html">
-                         Logout
-                    </a>
-                </li>
+            <a href="dashboard.html"
+               class="nav-item">
 
-            </ul>
+                <i class="fa-solid fa-grid-2"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="goals.html"
+               class="nav-item">
+
+                <i class="fa-solid fa-bullseye"></i>
+                <span>My Goals</span>
+
+            </a>
+
+
+            <a href="time-tracking.html"
+               class="nav-item active">
+
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Time Tracking</span>
+
+            </a>
+
+
+            <a href="progress.html"
+               class="nav-item">
+
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Progress</span>
+
+            </a>
+
+
+            <a href="profile.html"
+               class="nav-item">
+
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+
+            </a>
 
         </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="index.html"
+               class="nav-item logout">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+
+            </a>
+
+        </div>
 
     </aside>
 
 
-
-    <!-- =========================================
-         MAIN CONTENT
-    ========================================== -->
+    <!-- ================= MAIN ================= -->
 
     <main class="main-content">
 
 
-        <!-- =========================================
-             PAGE HEADER
-        ========================================== -->
+        <!-- HEADER -->
 
-        <header class="page-header">
+        <header class="top-header">
 
             <div>
 
-                <h1> Time Tracking</h1>
+                <h1>Time Tracking</h1>
 
                 <p>
-                    Track the time you spend working toward
-                    your goals and understand how you use your day.
+                    Track how you spend your time and stay productive.
                 </p>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <button class="notification">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span></span>
+
+                </button>
+
+
+                <div class="profile-mini">
+
+                    <div class="avatar">
+                        P
+                    </div>
+
+                    <div>
+
+                        <strong>Palak</strong>
+
+                        <small>User</small>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </header>
 
 
+        <!-- ================= SUMMARY ================= -->
 
-        <!-- =========================================
-             TIME SUMMARY
-        ========================================== -->
-
-        <section class="time-summary">
+        <section class="stats-grid">
 
 
-            <div class="summary-card">
+            <div class="stat-card">
 
-                <span class="summary-icon">
-                    
-                </span>
+                <div class="stat-icon blue">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
 
                 <div>
 
-                    <h3>Today's Time</h3>
+                    <span>Today's Time</span>
 
-                    <p>4h 30m</p>
-
-                    <small>
-                        Time tracked today
-                    </small>
+                    <h3>04h 35m</h3>
 
                 </div>
 
             </div>
 
 
+            <div class="stat-card">
 
-            <div class="summary-card">
+                <div class="stat-icon purple">
 
-                <span class="summary-icon">
-                    
-                </span>
+                    <i class="fa-solid fa-calendar-week"></i>
+
+                </div>
 
                 <div>
 
-                    <h3>This Week</h3>
+                    <span>This Week</span>
 
-                    <p>18h 45m</p>
-
-                    <small>
-                        Total this week
-                    </small>
+                    <h3>27h 40m</h3>
 
                 </div>
 
             </div>
 
 
+            <div class="stat-card">
 
-            <div class="summary-card">
+                <div class="stat-icon green">
 
-                <span class="summary-icon">
-                    
-                </span>
+                    <i class="fa-solid fa-bullseye"></i>
+
+                </div>
 
                 <div>
 
-                    <h3>Goal Time</h3>
+                    <span>Goal Time</span>
 
-                    <p>16h 20m</p>
-
-                    <small>
-                        Time spent on goals
-                    </small>
+                    <h3>21h 15m</h3>
 
                 </div>
 
             </div>
 
 
+            <div class="stat-card">
 
-            <div class="summary-card">
+                <div class="stat-icon orange">
 
-                <span class="summary-icon">
-                    
-                </span>
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
 
                 <div>
 
-                    <h3>Daily Average</h3>
+                    <span>Productivity</span>
 
-                    <p>3h 45m</p>
-
-                    <small>
-                        Average tracked time
-                    </small>
+                    <h3>82%</h3>
 
                 </div>
 
             </div>
-
 
         </section>
 
 
+        <!-- ================= TRACKING AREA ================= -->
 
-        <!-- =========================================
-             ACTIVE TIMER
-        ========================================== -->
-
-        <section class="active-timer">
-
-            <h2>▶ Start Tracking Your Time</h2>
-
-            <p class="section-description">
-
-                Select a goal and start the timer when you begin
-                working. Stop the timer when you finish.
-
-            </p>
+        <section class="tracking-grid">
 
 
-            <div class="timer-box">
+            <!-- TIMER -->
 
+            <div class="card timer-card">
 
-                <div class="timer-display">
+                <div class="card-header">
 
-                    <span>
-                        00:00:00
-                    </span>
+                    <div>
+
+                        <h2>Focus Timer</h2>
+
+                        <p>
+                            Start the timer when you begin working.
+                        </p>
+
+                    </div>
+
+                    <i class="fa-solid fa-stopwatch"></i>
 
                 </div>
 
 
-                <div class="timer-details">
+                <div class="timer-content">
+
+                    <label>Select Goal</label>
+
+                    <select>
+
+                        <option>
+                            Complete Java Project
+                        </option>
+
+                        <option>
+                            Learn JavaScript
+                        </option>
+
+                        <option>
+                            Daily Exercise
+                        </option>
+
+                    </select>
 
 
-                    <div class="form-group">
-
-                        <label for="timerGoal">
-                            Select Goal
-                        </label>
-
-                        <select
-                            id="timerGoal"
-                            name="timerGoal"
-                        >
-
-                            <option value="">
-                                Select a goal
-                            </option>
-
-                            <option value="java">
-                                Learn Java
-                            </option>
-
-                            <option value="project">
-                                Complete Project
-                            </option>
-
-                            <option value="exercise">
-                                Exercise
-                            </option>
-
-                        </select>
-
+                    <div class="timer-display">
+                        00:00:00
                     </div>
 
 
                     <div class="timer-buttons">
 
-                        <button
-                            type="button"
-                            class="btn btn-start"
-                        >
-                            ▶ Start Timer
+                        <button class="start-btn">
+                            <i class="fa-solid fa-play"></i>
+                            Start Timer
                         </button>
 
-                        <button
-                            type="button"
-                            class="btn btn-stop"
-                        >
-                            ⏹ Stop Timer
+                        <button class="stop-btn">
+                            <i class="fa-solid fa-stop"></i>
+                            Stop
                         </button>
 
                     </div>
-
 
                 </div>
 
             </div>
 
-        </section>
+
+            <!-- MANUAL ENTRY -->
+
+            <div class="card manual-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Manual Time Entry</h2>
+
+                        <p>
+                            Add time you tracked manually.
+                        </p>
+
+                    </div>
+
+                    <i class="fa-solid fa-plus"></i>
+
+                </div>
 
 
+                <form>
 
-        <!-- =========================================
-             MANUAL TIME ENTRY
-        ========================================== -->
-
-        <section class="manual-entry">
-
-            <h2> Add Time Manually</h2>
-
-            <p class="section-description">
-
-                Forgot to start the timer? Add your working
-                hours manually using the form below.
-
-            </p>
-
-
-            <form action="#" method="post">
-
-
-                <div class="form-row">
-
-
-                    <!-- GOAL -->
 
                     <div class="form-group">
 
-                        <label for="goal">
-                            Goal
-                        </label>
+                        <label>Goal</label>
 
-                        <select
-                            id="goal"
-                            name="goal"
-                            required
-                        >
+                        <select>
 
-                            <option value="">
-                                Select a goal
+                            <option>
+                                Complete Java Project
                             </option>
 
-                            <option value="java">
-                                Learn Java
+                            <option>
+                                Learn JavaScript
                             </option>
 
-                            <option value="project">
-                                Complete Project
-                            </option>
-
-                            <option value="exercise">
-                                Exercise
+                            <option>
+                                Daily Exercise
                             </option>
 
                         </select>
@@ -358,578 +364,273 @@
                     </div>
 
 
+                    <div class="form-row">
 
-                    <!-- DATE -->
+                        <div class="form-group">
+
+                            <label>Start Time</label>
+
+                            <input type="time">
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>End Time</label>
+
+                            <input type="time">
+
+                        </div>
+
+                    </div>
+
 
                     <div class="form-group">
 
-                        <label for="date">
-                            Date
-                        </label>
+                        <label>Notes</label>
 
-                        <input
-                            type="date"
-                            id="date"
-                            name="date"
-                            required
-                        >
+                        <input type="text"
+                               placeholder="What did you work on?">
 
                     </div>
 
 
-                </div>
+                    <button class="save-btn">
 
+                        <i class="fa-solid fa-check"></i>
 
+                        Save Time Entry
 
-                <div class="form-row">
+                    </button>
 
 
-                    <!-- START TIME -->
-
-                    <div class="form-group">
-
-                        <label for="startTime">
-                            Start Time
-                        </label>
-
-                        <input
-                            type="time"
-                            id="startTime"
-                            name="startTime"
-                            required
-                        >
-
-                    </div>
-
-
-
-                    <!-- END TIME -->
-
-                    <div class="form-group">
-
-                        <label for="endTime">
-                            End Time
-                        </label>
-
-                        <input
-                            type="time"
-                            id="endTime"
-                            name="endTime"
-                            required
-                        >
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- DESCRIPTION -->
-
-                <div class="form-group">
-
-                    <label for="notes">
-                        Work Notes
-                    </label>
-
-                    <textarea
-                        id="notes"
-                        name="notes"
-                        rows="3"
-                        placeholder="What did you work on during this time?"
-                    ></textarea>
-
-                </div>
-
-
-
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                >
-                    + Add Time Entry
-                </button>
-
-
-            </form>
-
-        </section>
-
-
-
-        <!-- =========================================
-             TODAY'S PRODUCTIVITY
-        ========================================== -->
-
-        <section class="productivity-section">
-
-            <h2>Today's Productivity</h2>
-
-            <p class="section-description">
-
-                See how your tracked time is distributed
-                across your goals.
-
-            </p>
-
-
-            <div class="productivity-grid">
-
-
-                <!-- JAVA -->
-
-                <div class="productivity-card">
-
-                    <div class="productivity-header">
-
-                        <h3>Learn Java</h3>
-
-                        <span>
-                            2h 30m
-                        </span>
-
-                    </div>
-
-
-                    <div class="productivity-bar">
-
-                        <div
-                            class="productivity-fill"
-                            style="width: 55%;"
-                        ></div>
-
-                    </div>
-
-
-                    <small>
-                        55% of today's tracked time
-                    </small>
-
-                </div>
-
-
-
-                <!-- PROJECT -->
-
-                <div class="productivity-card">
-
-                    <div class="productivity-header">
-
-                        <h3>Complete Project</h3>
-
-                        <span>
-                            1h 30m
-                        </span>
-
-                    </div>
-
-
-                    <div class="productivity-bar">
-
-                        <div
-                            class="productivity-fill"
-                            style="width: 35%;"
-                        ></div>
-
-                    </div>
-
-
-                    <small>
-                        35% of today's tracked time
-                    </small>
-
-                </div>
-
-
-
-                <!-- EXERCISE -->
-
-                <div class="productivity-card">
-
-                    <div class="productivity-header">
-
-                        <h3>Exercise</h3>
-
-                        <span>
-                            30m
-                        </span>
-
-                    </div>
-
-
-                    <div class="productivity-bar">
-
-                        <div
-                            class="productivity-fill"
-                            style="width: 10%;"
-                        ></div>
-
-                    </div>
-
-
-                    <small>
-                        10% of today's tracked time
-                    </small>
-
-                </div>
-
+                </form>
 
             </div>
 
         </section>
 
 
+        <!-- ================= PRODUCTIVITY ================= -->
 
-        <!-- =========================================
-             RECENT TIME LOGS
-        ========================================== -->
+        <section class="productivity-grid">
 
-        <section class="time-logs">
+
+            <div class="card productivity-card">
+
+                <div class="productivity-icon">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <div>
+
+                    <span>Focus Streak</span>
+
+                    <strong>6 Days</strong>
+
+                    <p>
+                        Keep your streak going.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card productivity-card">
+
+                <div class="productivity-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <div>
+
+                    <span>Daily Average</span>
+
+                    <strong>5h 32m</strong>
+
+                    <p>
+                        Based on this week.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card productivity-card">
+
+                <div class="productivity-icon">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+                <div>
+
+                    <span>Goal Focus</span>
+
+                    <strong>76%</strong>
+
+                    <p>
+                        Time spent on goals.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TIME LOGS ================= -->
+
+        <section class="card logs-section">
 
 
             <div class="section-header">
 
                 <div>
 
-                    <h2> Recent Time Logs</h2>
+                    <h2>Recent Time Logs</h2>
 
                     <p>
-                        Review your recently tracked activities.
+                        Review your recently tracked sessions.
                     </p>
 
                 </div>
+
+
+                <button class="view-btn">
+
+                    View All
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
 
             </div>
 
 
-
-            <div class="table-container">
-
-                <table>
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Goal</th>
-
-                            <th>Date</th>
-
-                            <th>Start Time</th>
-
-                            <th>End Time</th>
-
-                            <th>Duration</th>
-
-                            <th>Notes</th>
-
-                        </tr>
-
-                    </thead>
-
-
-
-                    <tbody>
-
-
-                        <tr>
-
-                            <td>
-                                <strong>Learn Java</strong>
-                            </td>
-
-                            <td>
-                                8 Oct 2026
-                            </td>
-
-                            <td>
-                                09:00 AM
-                            </td>
-
-                            <td>
-                                11:30 AM
-                            </td>
-
-                            <td>
-                                2h 30m
-                            </td>
-
-                            <td>
-                                Java collections
-                            </td>
-
-                        </tr>
-
-
-
-                        <tr>
-
-                            <td>
-                                <strong>Complete Project</strong>
-                            </td>
-
-                            <td>
-                                8 Oct 2026
-                            </td>
-
-                            <td>
-                                01:00 PM
-                            </td>
-
-                            <td>
-                                02:30 PM
-                            </td>
-
-                            <td>
-                                1h 30m
-                            </td>
-
-                            <td>
-                                Dashboard UI
-                            </td>
-
-                        </tr>
-
-
-
-                        <tr>
-
-                            <td>
-                                <strong>Exercise</strong>
-                            </td>
-
-                            <td>
-                                8 Oct 2026
-                            </td>
-
-                            <td>
-                                06:00 PM
-                            </td>
-
-                            <td>
-                                06:30 PM
-                            </td>
-
-                            <td>
-                                30m
-                            </td>
-
-                            <td>
-                                Workout session
-                            </td>
-
-                        </tr>
-
-
-
-                        <tr>
-
-                            <td>
-                                <strong>Learn Java</strong>
-                            </td>
-
-                            <td>
-                                7 Oct 2026
-                            </td>
-
-                            <td>
-                                10:00 AM
-                            </td>
-
-                            <td>
-                                12:00 PM
-                            </td>
-
-                            <td>
-                                2h
-                            </td>
-
-                            <td>
-                                OOP concepts
-                            </td>
-
-                        </tr>
-
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- =========================================
-             TIME MANAGEMENT TIPS
-        ========================================== -->
-
-        <section class="time-tips">
-
-            <h2> Time Management Tips</h2>
-
-
-            <div class="tips-grid">
-
-
-                <div class="tip-card">
-
-                    <h3> Focus on One Goal</h3>
-
-                    <p>
-                        Work on one important goal at a time
-                        instead of switching between multiple tasks.
-                    </p>
-
-                </div>
-
-
-
-                <div class="tip-card">
-
-                    <h3> Track Consistently</h3>
-
-                    <p>
-                        Record your working time regularly so
-                        your progress data remains accurate.
-                    </p>
-
-                </div>
-
-
-
-                <div class="tip-card">
-
-                    <h3> Take Breaks</h3>
-
-                    <p>
-                        Short breaks can help maintain focus
-                        during long working sessions.
-                    </p>
-
-                </div>
-
-
-
-                <div class="tip-card">
-
-                    <h3> Review Your Time</h3>
-
-                    <p>
-                        Check your weekly time logs to identify
-                        where your time is being spent.
-                    </p>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =========================================
-             WEEKLY SUMMARY
-        ========================================== -->
-
-        <section class="weekly-summary">
-
-            <h2> Weekly Time Summary</h2>
-
-            <div class="weekly-table">
+            <div class="table-wrapper">
 
                 <table>
 
                     <thead>
 
-                        <tr>
+                    <tr>
 
-                            <th>Day</th>
+                        <th>DATE</th>
+                        <th>GOAL</th>
+                        <th>START</th>
+                        <th>END</th>
+                        <th>DURATION</th>
+                        <th>STATUS</th>
 
-                            <th>Tracked Time</th>
-
-                            <th>Main Activity</th>
-
-                            <th>Status</th>
-
-                        </tr>
+                    </tr>
 
                     </thead>
 
 
                     <tbody>
 
-                        <tr>
 
-                            <td>Monday</td>
+                    <tr>
 
-                            <td>3h 20m</td>
+                        <td>
+                            <strong>08 Oct 2026</strong>
+                        </td>
 
-                            <td>Java Learning</td>
+                        <td>
+                            Complete Java Project
+                        </td>
 
-                            <td>
-                                <span class="status-good">
-                                    Good
-                                </span>
-                            </td>
+                        <td>
+                            09:00 AM
+                        </td>
 
-                        </tr>
+                        <td>
+                            11:30 AM
+                        </td>
 
+                        <td>
+                            <strong>02h 30m</strong>
+                        </td>
 
-                        <tr>
+                        <td>
 
-                            <td>Tuesday</td>
+                            <span class="status completed">
+                                Completed
+                            </span>
 
-                            <td>4h 10m</td>
+                        </td>
 
-                            <td>Project Work</td>
-
-                            <td>
-                                <span class="status-good">
-                                    Good
-                                </span>
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td>Wednesday</td>
-
-                            <td>2h 45m</td>
-
-                            <td>Java Learning</td>
-
-                            <td>
-                                <span class="status-average">
-                                    Average
-                                </span>
-                            </td>
-
-                        </tr>
+                    </tr>
 
 
-                        <tr>
+                    <tr>
 
-                            <td>Thursday</td>
+                        <td>
+                            <strong>08 Oct 2026</strong>
+                        </td>
 
-                            <td>4h 30m</td>
+                        <td>
+                            Learn JavaScript
+                        </td>
 
-                            <td>Project Work</td>
+                        <td>
+                            02:00 PM
+                        </td>
 
-                            <td>
-                                <span class="status-good">
-                                    Good
-                                </span>
-                            </td>
+                        <td>
+                            03:45 PM
+                        </td>
 
-                        </tr>
+                        <td>
+                            <strong>01h 45m</strong>
+                        </td>
+
+                        <td>
+
+                            <span class="status completed">
+                                Completed
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>07 Oct 2026</strong>
+                        </td>
+
+                        <td>
+                            Complete Java Project
+                        </td>
+
+                        <td>
+                            10:00 AM
+                        </td>
+
+                        <td>
+                            11:20 AM
+                        </td>
+
+                        <td>
+                            <strong>01h 20m</strong>
+                        </td>
+
+                        <td>
+
+                            <span class="status completed">
+                                Completed
+                            </span>
+
+                        </td>
+
+                    </tr>
 
 
                     </tbody>
@@ -941,17 +642,125 @@
         </section>
 
 
+        <!-- ================= WEEKLY ================= -->
 
-        <!-- =========================================
-             FOOTER
-        ========================================== -->
+        <section class="card weekly-card">
 
-        <footer class="page-footer">
+            <div class="section-header">
 
-            <p>
-                Track your time. Understand your habits.
-                Achieve your goals. 
-            </p>
+                <div>
+
+                    <h2>Weekly Summary</h2>
+
+                    <p>
+                        Your time distribution for this week.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="week-grid">
+
+                <div class="day">
+
+                    <span>MON</span>
+
+                    <div class="day-bar">
+                        <div style="height:65%"></div>
+                    </div>
+
+                    <strong>5h</strong>
+
+                </div>
+
+
+                <div class="day">
+
+                    <span>TUE</span>
+
+                    <div class="day-bar">
+                        <div style="height:80%"></div>
+                    </div>
+
+                    <strong>6h</strong>
+
+                </div>
+
+
+                <div class="day">
+
+                    <span>WED</span>
+
+                    <div class="day-bar">
+                        <div style="height:55%"></div>
+                    </div>
+
+                    <strong>4h</strong>
+
+                </div>
+
+
+                <div class="day">
+
+                    <span>THU</span>
+
+                    <div class="day-bar">
+                        <div style="height:90%"></div>
+                    </div>
+
+                    <strong>7h</strong>
+
+                </div>
+
+
+                <div class="day">
+
+                    <span>FRI</span>
+
+                    <div class="day-bar">
+                        <div style="height:70%"></div>
+                    </div>
+
+                    <strong>5h</strong>
+
+                </div>
+
+
+                <div class="day">
+
+                    <span>SAT</span>
+
+                    <div class="day-bar">
+                        <div style="height:35%"></div>
+                    </div>
+
+                    <strong>3h</strong>
+
+                </div>
+
+
+                <div class="day">
+
+                    <span>SUN</span>
+
+                    <div class="day-bar">
+                        <div style="height:20%"></div>
+                    </div>
+
+                    <strong>2h</strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            © 2026 TimeTrack · Time Management & Goal Setting Tool
 
         </footer>
 
@@ -960,7 +769,5 @@
 
 </div>
 
-
 </body>
-
 </html>
