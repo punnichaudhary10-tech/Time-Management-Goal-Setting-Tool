@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY lib/mysql-connector-j-26.7.0.jar /app/lib/mysql-connector.jar
 COPY src /app/src
+COPY frontend /app/frontend
 
 RUN mkdir -p /app/classes && \
     javac -cp "/app/lib/mysql-connector.jar" \
