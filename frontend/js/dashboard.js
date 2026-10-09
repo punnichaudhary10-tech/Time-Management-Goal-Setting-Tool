@@ -32,28 +32,72 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         console.log("Logged-in user ID:", userId);
 
-        // Welcome message
+
+        // =================================================
+        // GET USER NAME FOR WELCOME MESSAGE
+        // =================================================
+
         const welcomeMessage =
             document.getElementById("welcomeMessage");
 
         if (welcomeMessage) {
+
+            let displayName = "User";
+
+            try {
+
+                const profileResponse = await fetch(
+                    `/api/user/profile?email=${encodeURIComponent(userEmail)}`
+                );
+
+                if (profileResponse.ok) {
+
+                    const profile =
+                        await profileResponse.json();
+
+                    if (
+                        profile.name &&
+                        profile.name.trim()
+                    ) {
+                        displayName =
+                            profile.name.trim();
+                    }
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to load user profile:",
+                    error
+                );
+            }
+
             welcomeMessage.textContent =
-                `Welcome back, ${userEmail}!`;
+                `Welcome back, ${displayName}!`;
         }
 
-        // Today's date
+
+        // =================================================
+        // TODAY'S DATE
+        // =================================================
+
         const todayDate =
             document.getElementById("todayDate");
 
         if (todayDate) {
+
             todayDate.textContent =
                 "Today: " +
-                new Date().toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                });
+                new Date().toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
         }
+
 
         await loadDashboard();
 
@@ -61,9 +105,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     } catch (error) {
 
-        console.error("Dashboard error:", error);
+        console.error(
+            "Dashboard error:",
+            error
+        );
 
-        alert("Unable to load dashboard data.");
+        alert(
+            "Unable to load dashboard data."
+        );
     }
 
 
@@ -82,12 +131,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
         if (!goalsResponse.ok) {
-            throw new Error("Unable to load goals");
+            throw new Error(
+                "Unable to load goals"
+            );
         }
 
-        goals = await goalsResponse.json();
+        goals =
+            await goalsResponse.json();
 
-        console.log("Goals:", goals);
+        console.log(
+            "Goals:",
+            goals
+        );
 
 
         // -----------------------------
@@ -99,12 +154,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
         if (timeResponse.ok) {
-            timeEntries = await timeResponse.json();
+
+            timeEntries =
+                await timeResponse.json();
+
         } else {
+
             timeEntries = [];
         }
 
-        console.log("Time entries:", timeEntries);
+        console.log(
+            "Time entries:",
+            timeEntries
+        );
 
 
         // -----------------------------
@@ -113,47 +175,72 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         progressData = [];
 
+
         for (const goal of goals) {
 
             try {
 
-                const response = await fetch(
-                    `/api/progress/${goal.goalId}`
-                );
+                const response =
+                    await fetch(
+                        `/api/progress/${goal.goalId}`
+                    );
+
 
                 if (response.ok) {
 
                     const progress =
                         await response.json();
 
-                    progressData.push(progress);
+                    progressData.push(
+                        progress
+                    );
 
                 } else {
 
                     progressData.push({
-                        goalId: goal.goalId,
-                        progressPercentage: 0,
-                        completionStatus: goal.status
+
+                        goalId:
+                            goal.goalId,
+
+                        progressPercentage:
+                            0,
+
+                        completionStatus:
+                            goal.status
+
                     });
                 }
 
             } catch (error) {
 
                 progressData.push({
-                    goalId: goal.goalId,
-                    progressPercentage: 0,
-                    completionStatus: goal.status
+
+                    goalId:
+                        goal.goalId,
+
+                    progressPercentage:
+                        0,
+
+                    completionStatus:
+                        goal.status
+
                 });
             }
         }
 
 
         updateSummary();
+
         updateGoalsTable();
+
         updateTimeTable();
+
         updateProgress();
+
         updateDeadlines();
+
         updateActivity();
+
         updateTimeGoalDropdown();
     }
 
@@ -164,11 +251,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function updateSummary() {
 
-        const totalGoals = goals.length;
+        const totalGoals =
+            goals.length;
+
 
         const completedGoals =
             goals.filter(
-                goal => goal.status === "COMPLETED"
+                goal =>
+                    goal.status ===
+                    "COMPLETED"
             ).length;
 
 
@@ -176,7 +267,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             timeEntries.reduce(
                 (total, entry) =>
                     total +
-                    Number(entry.durationMinutes || 0),
+                    Number(
+                        entry.durationMinutes || 0
+                    ),
                 0
             );
 
@@ -187,6 +280,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         let overallProgress = 0;
 
+
         if (progressData.length > 0) {
 
             overallProgress =
@@ -194,24 +288,39 @@ document.addEventListener("DOMContentLoaded", async function () {
                     (total, progress) =>
                         total +
                         Number(
-                            progress.progressPercentage || 0
+                            progress.progressPercentage ||
+                            0
                         ),
                     0
-                ) / progressData.length;
+                ) /
+                progressData.length;
         }
 
 
-        document.getElementById("totalGoals").textContent =
+        document.getElementById(
+            "totalGoals"
+        ).textContent =
             totalGoals;
 
-        document.getElementById("completedGoals").textContent =
+
+        document.getElementById(
+            "completedGoals"
+        ).textContent =
             completedGoals;
 
-        document.getElementById("totalTime").textContent =
+
+        document.getElementById(
+            "totalTime"
+        ).textContent =
             `${totalHours.toFixed(1)} hrs`;
 
-        document.getElementById("overallProgress").textContent =
-            `${Math.round(overallProgress)}%`;
+
+        document.getElementById(
+            "overallProgress"
+        ).textContent =
+            `${Math.round(
+                overallProgress
+            )}%`;
     }
 
 
@@ -222,11 +331,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateGoalsTable() {
 
         const tableBody =
-            document.getElementById("goalsTableBody");
+            document.getElementById(
+                "goalsTableBody"
+            );
+
 
         if (!tableBody) {
             return;
         }
+
 
         tableBody.innerHTML = "";
 
@@ -245,48 +358,72 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        goals.forEach(goal => {
+        goals.forEach(
+            goal => {
 
-            const progress =
-                getProgressForGoal(goal.goalId);
+                const progress =
+                    getProgressForGoal(
+                        goal.goalId
+                    );
 
-            const percentage =
-                progress
-                    ? Number(
-                        progress.progressPercentage || 0
+
+                const percentage =
+                    progress
+                        ? Number(
+                            progress.progressPercentage ||
+                            0
+                        )
+                        : 0;
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${escapeHtml(
+                    goal.goalName
+                )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                    String(
+                        goal.target
                     )
-                    : 0;
+                )}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                    goal.deadline
+                )}
+                    </td>
+
+                    <td>
+                        ${Math.round(
+                    percentage
+                )}%
+                    </td>
+
+                    <td>
+                        ${formatStatus(
+                    goal.status
+                )}
+                    </td>
+
+                `;
 
 
-            const row =
-                document.createElement("tr");
-
-
-            row.innerHTML = `
-                <td>
-                    ${escapeHtml(goal.goalName)}
-                </td>
-
-                <td>
-                    ${escapeHtml(String(goal.target))}
-                </td>
-
-                <td>
-                    ${formatDate(goal.deadline)}
-                </td>
-
-                <td>
-                    ${Math.round(percentage)}%
-                </td>
-
-                <td>
-                    ${formatStatus(goal.status)}
-                </td>
-            `;
-
-
-            tableBody.appendChild(row);
-        });
+                tableBody.appendChild(
+                    row
+                );
+            }
+        );
     }
 
 
@@ -297,11 +434,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateTimeTable() {
 
         const tableBody =
-            document.getElementById("timeTableBody");
+            document.getElementById(
+                "timeTableBody"
+            );
+
 
         if (!tableBody) {
             return;
         }
+
 
         tableBody.innerHTML = "";
 
@@ -324,49 +465,66 @@ document.addEventListener("DOMContentLoaded", async function () {
             .slice()
             .reverse()
             .slice(0, 10)
-            .forEach(entry => {
+            .forEach(
+                entry => {
 
-                const goal =
-                    goals.find(
-                        item =>
-                            item.goalId === entry.goalId
+                    const goal =
+                        goals.find(
+                            item =>
+                                item.goalId ===
+                                entry.goalId
+                        );
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${goal
+                            ? escapeHtml(
+                                goal.goalName
+                            )
+                            : "Unknown Goal"
+                        }
+                        </td>
+
+                        <td>
+                            ${formatDateTime(
+                            entry.startTime
+                        )}
+                        </td>
+
+                        <td>
+                            ${formatTime(
+                            entry.startTime
+                        )}
+                        </td>
+
+                        <td>
+                            ${formatTime(
+                            entry.endTime
+                        )}
+                        </td>
+
+                        <td>
+                            ${formatDuration(
+                            entry.durationMinutes
+                        )}
+                        </td>
+
+                    `;
+
+
+                    tableBody.appendChild(
+                        row
                     );
-
-
-                const row =
-                    document.createElement("tr");
-
-
-                row.innerHTML = `
-                    <td>
-                        ${goal
-                        ? escapeHtml(goal.goalName)
-                        : "Unknown Goal"
-                    }
-                    </td>
-
-                    <td>
-                        ${formatDateTime(entry.startTime)}
-                    </td>
-
-                    <td>
-                        ${formatTime(entry.startTime)}
-                    </td>
-
-                    <td>
-                        ${formatTime(entry.endTime)}
-                    </td>
-
-                    <td>
-                        ${formatDuration(
-                        entry.durationMinutes
-                    )}
-                    </td>
-                `;
-
-
-                tableBody.appendChild(row);
-            });
+                }
+            );
     }
 
 
@@ -377,11 +535,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateProgress() {
 
         const container =
-            document.getElementById("progressContainer");
+            document.getElementById(
+                "progressContainer"
+            );
+
 
         if (!container) {
             return;
         }
+
 
         container.innerHTML = "";
 
@@ -395,46 +557,65 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        goals.forEach(goal => {
+        goals.forEach(
+            goal => {
 
-            const progress =
-                getProgressForGoal(goal.goalId);
-
-
-            const percentage =
-                progress
-                    ? Number(
-                        progress.progressPercentage || 0
-                    )
-                    : 0;
+                const progress =
+                    getProgressForGoal(
+                        goal.goalId
+                    );
 
 
-            const item =
-                document.createElement("div");
-
-            item.className = "progress-item";
-
-
-            item.innerHTML = `
-                <div>
-                    <span>
-                        ${escapeHtml(goal.goalName)}
-                    </span>
-
-                    <span>
-                        ${Math.round(percentage)}%
-                    </span>
-                </div>
-
-                <progress
-                    value="${percentage}"
-                    max="100">
-                </progress>
-            `;
+                const percentage =
+                    progress
+                        ? Number(
+                            progress.progressPercentage ||
+                            0
+                        )
+                        : 0;
 
 
-            container.appendChild(item);
-        });
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "progress-item";
+
+
+                item.innerHTML = `
+
+                    <div>
+
+                        <span>
+                            ${escapeHtml(
+                    goal.goalName
+                )}
+                        </span>
+
+                        <span>
+                            ${Math.round(
+                    percentage
+                )}%
+                        </span>
+
+                    </div>
+
+                    <progress
+                        value="${percentage}"
+                        max="100">
+                    </progress>
+
+                `;
+
+
+                container.appendChild(
+                    item
+                );
+            }
+        );
     }
 
 
@@ -449,9 +630,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "deadlinesContainer"
             );
 
+
         if (!container) {
             return;
         }
+
 
         container.innerHTML = "";
 
@@ -459,33 +642,51 @@ document.addEventListener("DOMContentLoaded", async function () {
         const today =
             new Date();
 
-        today.setHours(0, 0, 0, 0);
+        today.setHours(
+            0,
+            0,
+            0,
+            0
+        );
 
 
         const upcoming =
             goals
-                .filter(goal => {
+                .filter(
+                    goal => {
 
-                    if (!goal.deadline) {
-                        return false;
-                    }
+                        if (!goal.deadline) {
+                            return false;
+                        }
 
-                    const deadline =
-                        new Date(
-                            goal.deadline + "T00:00:00"
+
+                        const deadline =
+                            new Date(
+                                goal.deadline +
+                                "T00:00:00"
+                            );
+
+
+                        return (
+                            deadline >= today &&
+                            goal.status !==
+                            "COMPLETED"
                         );
-
-                    return (
-                        deadline >= today &&
-                        goal.status !== "COMPLETED"
-                    );
-                })
+                    }
+                )
                 .sort(
                     (a, b) =>
-                        new Date(a.deadline) -
-                        new Date(b.deadline)
+                        new Date(
+                            a.deadline
+                        ) -
+                        new Date(
+                            b.deadline
+                        )
                 )
-                .slice(0, 5);
+                .slice(
+                    0,
+                    5
+                );
 
 
         if (upcoming.length === 0) {
@@ -497,27 +698,42 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        upcoming.forEach(goal => {
+        upcoming.forEach(
+            goal => {
 
-            const item =
-                document.createElement("div");
-
-            item.className = "deadline-item";
-
-
-            item.innerHTML = `
-                <strong>
-                    ${escapeHtml(goal.goalName)}
-                </strong>
-
-                <span>
-                    Due: ${formatDate(goal.deadline)}
-                </span>
-            `;
+                const item =
+                    document.createElement(
+                        "div"
+                    );
 
 
-            container.appendChild(item);
-        });
+                item.className =
+                    "deadline-item";
+
+
+                item.innerHTML = `
+
+                    <strong>
+                        ${escapeHtml(
+                    goal.goalName
+                )}
+                    </strong>
+
+                    <span>
+                        Due:
+                        ${formatDate(
+                    goal.deadline
+                )}
+                    </span>
+
+                `;
+
+
+                container.appendChild(
+                    item
+                );
+            }
+        );
     }
 
 
@@ -528,11 +744,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateActivity() {
 
         const list =
-            document.getElementById("activityList");
+            document.getElementById(
+                "activityList"
+            );
+
 
         if (!list) {
             return;
         }
+
 
         list.innerHTML = "";
 
@@ -541,61 +761,82 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Goal activities
-        goals.forEach(goal => {
 
-            activities.push({
-                text:
-                    `Goal "${goal.goalName}" exists`,
-                date:
-                    goal.createdAt || goal.deadline
-            });
-        });
+        goals.forEach(
+            goal => {
+
+                activities.push({
+
+                    text:
+                        `Goal "${goal.goalName}" exists`,
+
+                    date:
+                        goal.createdAt ||
+                        goal.deadline
+
+                });
+            }
+        );
 
 
         // Time activities
-        timeEntries.forEach(entry => {
 
-            const goal =
-                goals.find(
-                    item =>
-                        item.goalId === entry.goalId
-                );
+        timeEntries.forEach(
+            entry => {
+
+                const goal =
+                    goals.find(
+                        item =>
+                            item.goalId ===
+                            entry.goalId
+                    );
 
 
-            activities.push({
-                text:
-                    `Logged ${formatDuration(
-                        entry.durationMinutes
-                    )} for "${goal
-                        ? goal.goalName
-                        : "Unknown Goal"
-                    }"`,
-                date:
-                    entry.startTime
-            });
-        });
+                activities.push({
+
+                    text:
+                        `Logged ${formatDuration(
+                            entry.durationMinutes
+                        )} for "${goal
+                            ? goal.goalName
+                            : "Unknown Goal"
+                        }"`,
+
+                    date:
+                        entry.startTime
+
+                });
+            }
+        );
 
 
         // Progress activities
-        progressData.forEach(progress => {
 
-            const goal =
-                goals.find(
-                    item =>
-                        item.goalId === progress.goalId
-                );
+        progressData.forEach(
+            progress => {
+
+                const goal =
+                    goals.find(
+                        item =>
+                            item.goalId ===
+                            progress.goalId
+                    );
 
 
-            if (goal) {
+                if (goal) {
 
-                activities.push({
-                    text:
-                        `Updated progress for "${goal.goalName}"`,
-                    date:
-                        progress.updatedAt
-                });
+                    activities.push({
+
+                        text:
+                            `Updated progress for "${goal.goalName}"`,
+
+                        date:
+                            progress.updatedAt
+
+                    });
+                }
             }
-        });
+        );
 
 
         if (activities.length === 0) {
@@ -610,16 +851,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         activities
             .slice(-8)
             .reverse()
-            .forEach(activity => {
+            .forEach(
+                activity => {
 
-                const li =
-                    document.createElement("li");
+                    const li =
+                        document.createElement(
+                            "li"
+                        );
 
-                li.textContent =
-                    activity.text;
 
-                list.appendChild(li);
-            });
+                    li.textContent =
+                        activity.text;
+
+
+                    list.appendChild(
+                        li
+                    );
+                }
+            );
     }
 
 
@@ -630,29 +879,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateTimeGoalDropdown() {
 
         const select =
-            document.getElementById("timeGoal");
+            document.getElementById(
+                "timeGoal"
+            );
+
 
         if (!select) {
             return;
         }
 
+
         select.innerHTML =
-            `<option value="">Select Goal</option>`;
+            `<option value="">
+                Select Goal
+            </option>`;
 
 
-        goals.forEach(goal => {
+        goals.forEach(
+            goal => {
 
-            const option =
-                document.createElement("option");
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
-            option.value =
-                goal.goalId;
 
-            option.textContent =
-                goal.goalName;
+                option.value =
+                    goal.goalId;
 
-            select.appendChild(option);
-        });
+
+                option.textContent =
+                    goal.goalName;
+
+
+                select.appendChild(
+                    option
+                );
+            }
+        );
     }
 
 
@@ -663,20 +927,30 @@ document.addEventListener("DOMContentLoaded", async function () {
     function setupButtons() {
 
         // Add Goal
+
         const addGoalBtn =
-            document.getElementById("addGoalBtn");
+            document.getElementById(
+                "addGoalBtn"
+            );
+
 
         const addGoalBtn2 =
-            document.getElementById("addGoalBtn2");
+            document.getElementById(
+                "addGoalBtn2"
+            );
+
 
         if (addGoalBtn) {
+
             addGoalBtn.addEventListener(
                 "click",
                 showGoalForm
             );
         }
 
+
         if (addGoalBtn2) {
+
             addGoalBtn2.addEventListener(
                 "click",
                 showGoalForm
@@ -685,20 +959,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Log Time
+
         const logTimeBtn =
-            document.getElementById("logTimeBtn");
+            document.getElementById(
+                "logTimeBtn"
+            );
+
 
         const logTimeBtn2 =
-            document.getElementById("logTimeBtn2");
+            document.getElementById(
+                "logTimeBtn2"
+            );
+
 
         if (logTimeBtn) {
+
             logTimeBtn.addEventListener(
                 "click",
                 showTimeForm
             );
         }
 
+
         if (logTimeBtn2) {
+
             logTimeBtn2.addEventListener(
                 "click",
                 showTimeForm
@@ -707,10 +991,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // View Progress
+
         const viewProgressBtn =
             document.getElementById(
                 "viewProgressBtn"
             );
+
 
         if (viewProgressBtn) {
 
@@ -718,23 +1004,30 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "click",
                 function () {
 
-                    document
-                        .querySelector(
+                    const progressSection =
+                        document.querySelector(
                             ".progress-section"
-                        )
-                        .scrollIntoView({
+                        );
+
+
+                    if (progressSection) {
+
+                        progressSection.scrollIntoView({
                             behavior: "smooth"
                         });
+                    }
                 }
             );
         }
 
 
         // Cancel goal
+
         const cancelGoalBtn =
             document.getElementById(
                 "cancelGoalBtn"
             );
+
 
         if (cancelGoalBtn) {
 
@@ -746,10 +1039,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Cancel time
+
         const cancelTimeBtn =
             document.getElementById(
                 "cancelTimeBtn"
             );
+
 
         if (cancelTimeBtn) {
 
@@ -761,10 +1056,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Goal form
+
         const goalForm =
             document.getElementById(
                 "goalForm"
             );
+
 
         if (goalForm) {
 
@@ -776,10 +1073,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Time form
+
         const timeForm =
             document.getElementById(
                 "timeForm"
             );
+
 
         if (timeForm) {
 
@@ -791,10 +1090,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Progress update
+
         const updateProgressBtn =
             document.getElementById(
                 "updateProgressBtn"
             );
+
 
         if (updateProgressBtn) {
 
@@ -806,10 +1107,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Logout
+
         const logoutBtn =
             document.getElementById(
                 "logoutBtn"
             );
+
 
         if (logoutBtn) {
 
@@ -819,9 +1122,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     event.preventDefault();
 
+
                     localStorage.removeItem(
                         "userEmail"
                     );
+
 
                     window.location.href =
                         "login.html";
@@ -842,9 +1147,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "goalFormSection"
             );
 
+
         if (section) {
 
             section.hidden = false;
+
 
             section.scrollIntoView({
                 behavior: "smooth"
@@ -860,7 +1167,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "goalFormSection"
             );
 
+
         if (section) {
+
             section.hidden = true;
         }
     }
@@ -899,7 +1208,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             ).value;
 
 
-        if (!goalName || !target || !deadline) {
+        if (
+            !goalName ||
+            !target ||
+            !deadline
+        ) {
 
             alert(
                 "Please fill all required goal fields."
@@ -915,7 +1228,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 await fetch(
                     "/api/goals",
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
                             "Content-Type":
@@ -924,19 +1238,29 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                         body:
                             "userId=" +
-                            encodeURIComponent(userId) +
+                            encodeURIComponent(
+                                userId
+                            ) +
 
                             "&goalName=" +
-                            encodeURIComponent(goalName) +
+                            encodeURIComponent(
+                                goalName
+                            ) +
 
                             "&description=" +
-                            encodeURIComponent(description) +
+                            encodeURIComponent(
+                                description
+                            ) +
 
                             "&target=" +
-                            encodeURIComponent(target) +
+                            encodeURIComponent(
+                                target
+                            ) +
 
                             "&deadline=" +
-                            encodeURIComponent(deadline)
+                            encodeURIComponent(
+                                deadline
+                            )
                     }
                 );
 
@@ -963,15 +1287,20 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
 
-            alert("Goal created successfully!");
+            alert(
+                "Goal created successfully!"
+            );
 
 
             document
-                .getElementById("goalForm")
+                .getElementById(
+                    "goalForm"
+                )
                 .reset();
 
 
             hideGoalForm();
+
 
             await loadDashboard();
 
@@ -981,6 +1310,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "Create goal error:",
                 error
             );
+
 
             alert(
                 "Unable to connect to the server."
@@ -1000,9 +1330,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "timeFormSection"
             );
 
+
         if (section) {
 
             section.hidden = false;
+
 
             section.scrollIntoView({
                 behavior: "smooth"
@@ -1018,7 +1350,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "timeFormSection"
             );
 
+
         if (section) {
+
             section.hidden = true;
         }
     }
@@ -1051,7 +1385,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             ).value;
 
 
-        if (!goalId || !startTime || !endTime) {
+        if (
+            !goalId ||
+            !startTime ||
+            !endTime
+        ) {
 
             alert(
                 "Please fill all time fields."
@@ -1080,7 +1418,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 await fetch(
                     "/api/time-tracking",
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
                             "Content-Type":
@@ -1089,16 +1428,24 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                         body:
                             "userId=" +
-                            encodeURIComponent(userId) +
+                            encodeURIComponent(
+                                userId
+                            ) +
 
                             "&goalId=" +
-                            encodeURIComponent(goalId) +
+                            encodeURIComponent(
+                                goalId
+                            ) +
 
                             "&startTime=" +
-                            encodeURIComponent(startTime) +
+                            encodeURIComponent(
+                                startTime
+                            ) +
 
                             "&endTime=" +
-                            encodeURIComponent(endTime)
+                            encodeURIComponent(
+                                endTime
+                            )
                     }
                 );
 
@@ -1131,11 +1478,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             document
-                .getElementById("timeForm")
+                .getElementById(
+                    "timeForm"
+                )
                 .reset();
 
 
             hideTimeForm();
+
 
             await loadDashboard();
 
@@ -1145,6 +1495,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "Log time error:",
                 error
             );
+
 
             alert(
                 "Unable to connect to the server."
@@ -1181,6 +1532,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         goal.goalId
                     );
 
+
                 const percentage =
                     progress
                         ? Number(
@@ -1193,7 +1545,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 message +=
                     `${index + 1}. ` +
                     `${goal.goalName} ` +
-                    `(${Math.round(percentage)}%)\n`;
+                    `(${Math.round(
+                        percentage
+                    )}%)\n`;
             }
         );
 
@@ -1217,7 +1571,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             index >= goals.length
         ) {
 
-            alert("Invalid goal number.");
+            alert(
+                "Invalid goal number."
+            );
 
             return;
         }
@@ -1262,7 +1618,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 await fetch(
                     "/api/progress",
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
                             "Content-Type":
@@ -1276,7 +1633,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                             ) +
 
                             "&percentage=" +
-                            encodeURIComponent(value)
+                            encodeURIComponent(
+                                value
+                            )
                     }
                 );
 
@@ -1317,6 +1676,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 error
             );
 
+
             alert(
                 "Unable to connect to the server."
             );
@@ -1332,7 +1692,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         return progressData.find(
             progress =>
-                Number(progress.goalId) ===
+                Number(
+                    progress.goalId
+                ) ===
                 Number(goalId)
         );
     }
@@ -1351,7 +1713,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const date =
             new Date(
-                dateString + "T00:00:00"
+                dateString +
+                "T00:00:00"
             );
 
 
@@ -1370,7 +1733,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // DATETIME FORMAT
     // =====================================================
 
-    function formatDateTime(dateTimeString) {
+    function formatDateTime(
+        dateTimeString
+    ) {
 
         if (!dateTimeString) {
             return "-";
@@ -1378,7 +1743,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         const date =
-            new Date(dateTimeString);
+            new Date(
+                dateTimeString
+            );
 
 
         return date.toLocaleDateString(
@@ -1396,7 +1763,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // TIME FORMAT
     // =====================================================
 
-    function formatTime(dateTimeString) {
+    function formatTime(
+        dateTimeString
+    ) {
 
         if (!dateTimeString) {
             return "-";
@@ -1404,7 +1773,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         const date =
-            new Date(dateTimeString);
+            new Date(
+                dateTimeString
+            );
 
 
         return date.toLocaleTimeString(
@@ -1421,14 +1792,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     // DURATION FORMAT
     // =====================================================
 
-    function formatDuration(minutes) {
+    function formatDuration(
+        minutes
+    ) {
 
         minutes =
-            Number(minutes || 0);
+            Number(
+                minutes || 0
+            );
 
 
         const hours =
-            Math.floor(minutes / 60);
+            Math.floor(
+                minutes / 60
+            );
 
 
         const remainingMinutes =
@@ -1456,7 +1833,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // STATUS FORMAT
     // =====================================================
 
-    function formatStatus(status) {
+    function formatStatus(
+        status
+    ) {
 
         if (!status) {
             return "-";
@@ -1464,7 +1843,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         return status
-            .replaceAll("_", " ")
+            .replaceAll(
+                "_",
+                " "
+            )
             .replace(
                 /\b\w/g,
                 letter =>
@@ -1477,12 +1859,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     // HTML ESCAPE
     // =====================================================
 
-    function escapeHtml(value) {
+    function escapeHtml(
+        value
+    ) {
 
         return String(value)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
             .replaceAll(
                 '"',
                 "&quot;"

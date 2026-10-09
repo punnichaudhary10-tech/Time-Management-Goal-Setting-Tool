@@ -17,9 +17,7 @@
 
 <body>
 
-
     <div class="app">
-
 
         <!-- ================= SIDEBAR ================= -->
 
@@ -38,63 +36,44 @@
 
             </div>
 
-
             <div class="menu-title">
                 MAIN MENU
             </div>
 
-
             <nav class="navigation">
 
                 <a href="dashboard.html" class="nav-item">
-
                     <i class="fa-solid fa-grid-2"></i>
                     <span>Dashboard</span>
-
                 </a>
-
 
                 <a href="goals.html" class="nav-item">
-
                     <i class="fa-solid fa-bullseye"></i>
                     <span>My Goals</span>
-
                 </a>
-
 
                 <a href="time-tracking.html" class="nav-item active">
-
                     <i class="fa-solid fa-stopwatch"></i>
                     <span>Time Tracking</span>
-
                 </a>
-
 
                 <a href="progress.html" class="nav-item">
-
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Progress</span>
-
                 </a>
 
-
                 <a href="profile.html" class="nav-item">
-
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
-
                 </a>
 
             </nav>
 
-
             <div class="sidebar-bottom">
 
                 <a href="index.html" class="nav-item logout">
-
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
-
                 </a>
 
             </div>
@@ -107,7 +86,7 @@
         <main class="main-content">
 
 
-            <!-- HEADER -->
+            <!-- ================= HEADER ================= -->
 
             <header class="top-header">
 
@@ -136,14 +115,14 @@
                     <div class="profile-mini">
 
                         <div class="avatar">
-                            P
+                            U
                         </div>
 
                         <div>
 
-                            <strong>Palak</strong>
+                            <strong>User</strong>
 
-                            <small>User</small>
+                            <small>USER</small>
 
                         </div>
 
@@ -162,16 +141,14 @@
                 <div class="stat-card">
 
                     <div class="stat-icon blue">
-
                         <i class="fa-solid fa-clock"></i>
-
                     </div>
 
                     <div>
 
                         <span>Today's Time</span>
 
-                        <h3>04h 35m</h3>
+                        <h3 id="todayTime">0h 00m</h3>
 
                     </div>
 
@@ -181,16 +158,14 @@
                 <div class="stat-card">
 
                     <div class="stat-icon purple">
-
                         <i class="fa-solid fa-calendar-week"></i>
-
                     </div>
 
                     <div>
 
                         <span>This Week</span>
 
-                        <h3>27h 40m</h3>
+                        <h3 id="weekTime">0h 00m</h3>
 
                     </div>
 
@@ -200,16 +175,14 @@
                 <div class="stat-card">
 
                     <div class="stat-icon green">
-
                         <i class="fa-solid fa-bullseye"></i>
-
                     </div>
 
                     <div>
 
                         <span>Goal Time</span>
 
-                        <h3>21h 15m</h3>
+                        <h3 id="goalTime">0h 00m</h3>
 
                     </div>
 
@@ -219,16 +192,14 @@
                 <div class="stat-card">
 
                     <div class="stat-icon orange">
-
                         <i class="fa-solid fa-chart-line"></i>
-
                     </div>
 
                     <div>
 
                         <span>Productivity</span>
 
-                        <h3>82%</h3>
+                        <h3 id="productivityPercentage">0%</h3>
 
                     </div>
 
@@ -268,19 +239,9 @@
                         <label>Select Goal</label>
 
                         <select>
-
-                            <option>
-                                Complete Java Project
+                            <option value="">
+                                Loading goals...
                             </option>
-
-                            <option>
-                                Learn JavaScript
-                            </option>
-
-                            <option>
-                                Daily Exercise
-                            </option>
-
                         </select>
 
 
@@ -292,13 +253,20 @@
                         <div class="timer-buttons">
 
                             <button class="start-btn">
+
                                 <i class="fa-solid fa-play"></i>
+
                                 Start Timer
+
                             </button>
 
+
                             <button class="stop-btn">
+
                                 <i class="fa-solid fa-stop"></i>
+
                                 Stop
+
                             </button>
 
                         </div>
@@ -337,19 +305,9 @@
                             <label>Goal</label>
 
                             <select>
-
-                                <option>
-                                    Complete Java Project
+                                <option value="">
+                                    Loading goals...
                                 </option>
-
-                                <option>
-                                    Learn JavaScript
-                                </option>
-
-                                <option>
-                                    Daily Exercise
-                                </option>
-
                             </select>
 
                         </div>
@@ -417,7 +375,7 @@
 
                         <span>Focus Streak</span>
 
-                        <strong>6 Days</strong>
+                        <strong id="focusStreak">0 Days</strong>
 
                         <p>
                             Keep your streak going.
@@ -438,7 +396,7 @@
 
                         <span>Daily Average</span>
 
-                        <strong>5h 32m</strong>
+                        <strong id="dailyAverage">0h 00m</strong>
 
                         <p>
                             Based on this week.
@@ -459,7 +417,7 @@
 
                         <span>Goal Focus</span>
 
-                        <strong>76%</strong>
+                        <strong id="goalFocus">0%</strong>
 
                         <p>
                             Time spent on goals.
@@ -523,105 +481,15 @@
 
                         <tbody>
 
-
                             <tr>
 
-                                <td>
-                                    <strong>08 Oct 2026</strong>
-                                </td>
+                                <td colspan="6" style="text-align:center; padding:30px;">
 
-                                <td>
-                                    Complete Java Project
-                                </td>
-
-                                <td>
-                                    09:00 AM
-                                </td>
-
-                                <td>
-                                    11:30 AM
-                                </td>
-
-                                <td>
-                                    <strong>02h 30m</strong>
-                                </td>
-
-                                <td>
-
-                                    <span class="status completed">
-                                        Completed
-                                    </span>
+                                    Loading time entries...
 
                                 </td>
 
                             </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>08 Oct 2026</strong>
-                                </td>
-
-                                <td>
-                                    Learn JavaScript
-                                </td>
-
-                                <td>
-                                    02:00 PM
-                                </td>
-
-                                <td>
-                                    03:45 PM
-                                </td>
-
-                                <td>
-                                    <strong>01h 45m</strong>
-                                </td>
-
-                                <td>
-
-                                    <span class="status completed">
-                                        Completed
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    <strong>07 Oct 2026</strong>
-                                </td>
-
-                                <td>
-                                    Complete Java Project
-                                </td>
-
-                                <td>
-                                    10:00 AM
-                                </td>
-
-                                <td>
-                                    11:20 AM
-                                </td>
-
-                                <td>
-                                    <strong>01h 20m</strong>
-                                </td>
-
-                                <td>
-
-                                    <span class="status completed">
-                                        Completed
-                                    </span>
-
-                                </td>
-
-                            </tr>
-
 
                         </tbody>
 
@@ -653,15 +521,16 @@
 
                 <div class="week-grid">
 
+
                     <div class="day">
 
                         <span>MON</span>
 
                         <div class="day-bar">
-                            <div style="height:65%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>5h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -671,10 +540,10 @@
                         <span>TUE</span>
 
                         <div class="day-bar">
-                            <div style="height:80%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>6h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -684,10 +553,10 @@
                         <span>WED</span>
 
                         <div class="day-bar">
-                            <div style="height:55%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>4h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -697,10 +566,10 @@
                         <span>THU</span>
 
                         <div class="day-bar">
-                            <div style="height:90%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>7h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -710,10 +579,10 @@
                         <span>FRI</span>
 
                         <div class="day-bar">
-                            <div style="height:70%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>5h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -723,10 +592,10 @@
                         <span>SAT</span>
 
                         <div class="day-bar">
-                            <div style="height:35%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>3h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -736,10 +605,10 @@
                         <span>SUN</span>
 
                         <div class="day-bar">
-                            <div style="height:20%"></div>
+                            <div style="height:0%"></div>
                         </div>
 
-                        <strong>2h</strong>
+                        <strong>0h</strong>
 
                     </div>
 
@@ -759,6 +628,8 @@
 
     </div>
 
+
+    <script src="../js/user-header.js"></script>
     <script src="../js/time-tracking.js"></script>
 
 </body>

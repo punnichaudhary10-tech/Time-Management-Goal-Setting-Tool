@@ -8,9 +8,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
+
     let userId = null;
     let goals = [];
     let timeEntries = [];
+
 
     // ==========================================
     // GET USER ID
@@ -35,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         } catch (error) {
 
             console.error("User ID error:", error);
+
             alert("Unable to load user information.");
         }
     }
@@ -65,6 +68,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         } catch (error) {
 
             console.error("Goal loading error:", error);
+
+            goals = [];
+
+            populateGoalSelects();
         }
     }
 
@@ -79,9 +86,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             ".timer-content select, .manual-card select"
         );
 
+
         selects.forEach(function (select) {
 
             select.innerHTML = "";
+
 
             if (goals.length === 0) {
 
@@ -107,6 +116,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 select.appendChild(option);
             });
+
         });
     }
 
@@ -129,13 +139,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             timeEntries = await response.json();
 
-            console.log(
-                "Time entries:",
-                timeEntries
-            );
+            console.log("Time entries:", timeEntries);
+
 
             displayTimeEntries();
+
             updateStatistics();
+
+            updateProductivityCards();
+
             updateWeeklySummary();
 
         } catch (error) {
@@ -144,6 +156,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "Time entry loading error:",
                 error
             );
+
+            timeEntries = [];
+
+            displayTimeEntries();
+
+            updateStatistics();
+
+            updateProductivityCards();
+
+            updateWeeklySummary();
         }
     }
 
@@ -157,9 +179,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         const tableBody =
             document.querySelector(".logs-section tbody");
 
+
         if (!tableBody) {
             return;
         }
+
 
         tableBody.innerHTML = "";
 
@@ -182,18 +206,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         const recentEntries =
             [...timeEntries]
                 .sort(function (a, b) {
+
                     return new Date(b.startTime) -
                         new Date(a.startTime);
+
                 })
                 .slice(0, 10);
 
 
         recentEntries.forEach(function (entry) {
 
-            const goal = goals.find(function (item) {
-                return Number(item.goalId) ===
-                    Number(entry.goalId);
-            });
+
+            const goal =
+                goals.find(function (item) {
+
+                    return Number(item.goalId) ===
+                        Number(entry.goalId);
+
+                });
 
 
             const goalName =
@@ -207,6 +237,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             row.innerHTML = `
+
                 <td>
                     <strong>
                         ${formatDate(entry.startTime)}
@@ -236,9 +267,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                         Completed
                     </span>
                 </td>
+
             `;
 
+
             tableBody.appendChild(row);
+
         });
     }
 
@@ -263,30 +297,38 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const select =
                     manualForm.querySelector("select");
 
-                const startInput =
-                    manualForm.querySelector(
+
+                const timeInputs =
+                    manualForm.querySelectorAll(
                         'input[type="time"]'
                     );
 
+
+                const startInput =
+                    timeInputs[0];
+
+
                 const endInput =
-                    manualForm.querySelectorAll(
-                        'input[type="time"]'
-                    )[1];
+                    timeInputs[1];
 
 
                 const goalId =
                     select.value;
 
+
                 const startTime =
                     startInput.value;
+
 
                 const endTime =
                     endInput.value;
 
 
-                if (!goalId ||
+                if (
+                    !goalId ||
                     !startTime ||
-                    !endTime) {
+                    !endTime
+                ) {
 
                     alert(
                         "Please select a goal and enter both times."
@@ -307,9 +349,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                 const today =
-                    new Date()
-                        .toISOString()
-                        .split("T")[0];
+                    getLocalDateString();
 
 
                 const startDateTime =
@@ -362,7 +402,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                             "Time entry saved successfully!"
                         );
 
+
                         manualForm.reset();
+
 
                         await loadTimeEntries();
 
@@ -382,10 +424,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                         error
                     );
 
+
                     alert(
                         "Unable to connect to the server."
                     );
                 }
+
             }
         );
     }
@@ -402,16 +446,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     const timerSelect =
-        document.querySelector(".timer-content select");
+        document.querySelector(
+            ".timer-content select"
+        );
+
 
     const timerDisplay =
-        document.querySelector(".timer-display");
+        document.querySelector(
+            ".timer-display"
+        );
+
 
     const startButton =
-        document.querySelector(".start-btn");
+        document.querySelector(
+            ".start-btn"
+        );
+
 
     const stopButton =
-        document.querySelector(".stop-btn");
+        document.querySelector(
+            ".stop-btn"
+        );
 
 
     if (startButton) {
@@ -447,19 +502,24 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                 timerInterval =
-                    setInterval(function () {
+                    setInterval(
+                        function () {
 
-                        timerSeconds++;
+                            timerSeconds++;
 
-                        updateTimerDisplay();
+                            updateTimerDisplay();
 
-                    }, 1000);
+                        },
+                        1000
+                    );
 
 
                 startButton.disabled = true;
 
+
                 startButton.innerHTML =
                     '<i class="fa-solid fa-pause"></i> Running...';
+
             }
         );
     }
@@ -485,8 +545,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                     new Date();
 
 
-                if (timerStartTime &&
-                    timerGoalId) {
+                if (
+                    timerStartTime &&
+                    timerGoalId
+                ) {
 
                     await saveTimerEntry(
                         timerStartTime,
@@ -498,14 +560,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 startButton.disabled = false;
 
+
                 startButton.innerHTML =
                     '<i class="fa-solid fa-play"></i> Start Timer';
 
+
                 timerStartTime = null;
+
                 timerGoalId = null;
+
                 timerSeconds = 0;
 
+
                 updateTimerDisplay();
+
             }
         );
     }
@@ -559,12 +627,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "Timer session saved!"
                 );
 
+
                 await loadTimeEntries();
 
             } else {
 
                 const message =
                     await response.text();
+
 
                 alert(
                     message ||
@@ -579,6 +649,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "Timer save error:",
                 error
             );
+
 
             alert(
                 "Unable to save timer session."
@@ -599,12 +670,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         const hours =
-            Math.floor(timerSeconds / 3600);
+            Math.floor(
+                timerSeconds / 3600
+            );
+
 
         const minutes =
             Math.floor(
                 (timerSeconds % 3600) / 60
             );
+
 
         const seconds =
             timerSeconds % 60;
@@ -631,26 +706,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         let todayMinutes = 0;
         let weekMinutes = 0;
-        let totalMinutes = 0;
+        let goalMinutes = 0;
+
+
+        const startOfToday =
+            new Date(now);
+
+
+        startOfToday.setHours(
+            0,
+            0,
+            0,
+            0
+        );
 
 
         const startOfWeek =
-            new Date(now);
-
-        const day =
-            startOfWeek.getDay();
-
-        const difference =
-            day === 0 ? 6 : day - 1;
-
-        startOfWeek.setDate(
-            startOfWeek.getDate() -
-            difference
-        );
-
-        startOfWeek.setHours(
-            0, 0, 0, 0
-        );
+            getStartOfWeek();
 
 
         timeEntries.forEach(function (entry) {
@@ -658,49 +730,272 @@ document.addEventListener("DOMContentLoaded", async function () {
             const minutes =
                 Number(entry.durationMinutes) || 0;
 
-            totalMinutes += minutes;
-
 
             const entryDate =
                 new Date(entry.startTime);
 
 
             if (
-                entryDate.toDateString() ===
-                now.toDateString()
+                !Number.isNaN(entryDate.getTime())
             ) {
-                todayMinutes += minutes;
+
+                if (entryDate >= startOfToday) {
+                    todayMinutes += minutes;
+                }
+
+
+                if (entryDate >= startOfWeek) {
+                    weekMinutes += minutes;
+                }
             }
 
 
-            if (entryDate >= startOfWeek) {
-                weekMinutes += minutes;
+            if (entry.goalId) {
+                goalMinutes += minutes;
             }
+
         });
 
 
-        const statCards =
-            document.querySelectorAll(
-                ".stat-card h3"
+        const totalMinutes =
+            timeEntries.reduce(
+                function (total, entry) {
+
+                    return total +
+                        (Number(entry.durationMinutes) || 0);
+
+                },
+                0
             );
 
 
-        if (statCards.length >= 4) {
+        /*
+         * Every time entry in this system belongs
+         * to a goal. Therefore goal focus represents
+         * the percentage of tracked time attached
+         * to a valid goal.
+         */
 
-            statCards[0].textContent =
-                formatDuration(todayMinutes);
+        const productivity =
+            totalMinutes > 0
+                ? Math.round(
+                    (goalMinutes / totalMinutes) * 100
+                )
+                : 0;
 
-            statCards[1].textContent =
-                formatDuration(weekMinutes);
 
-            statCards[2].textContent =
-                formatDuration(totalMinutes);
+        setText(
+            "todayTime",
+            formatDuration(todayMinutes)
+        );
 
-            statCards[3].textContent =
-                totalMinutes > 0
-                    ? "100%"
-                    : "0%";
+
+        setText(
+            "weekTime",
+            formatDuration(weekMinutes)
+        );
+
+
+        setText(
+            "goalTime",
+            formatDuration(goalMinutes)
+        );
+
+
+        setText(
+            "productivityPercentage",
+            productivity + "%"
+        );
+    }
+
+
+    // ==========================================
+    // PRODUCTIVITY CARDS
+    // ==========================================
+
+    function updateProductivityCards() {
+
+        const startOfWeek =
+            getStartOfWeek();
+
+
+        const activeDates =
+            new Set();
+
+
+        let weekMinutes = 0;
+        let goalMinutes = 0;
+
+
+        timeEntries.forEach(function (entry) {
+
+            const date =
+                new Date(entry.startTime);
+
+
+            const minutes =
+                Number(entry.durationMinutes) || 0;
+
+
+            if (
+                Number.isNaN(date.getTime())
+            ) {
+                return;
+            }
+
+
+            if (date >= startOfWeek) {
+
+                weekMinutes += minutes;
+
+                activeDates.add(
+                    getDateKey(date)
+                );
+
+            }
+
+
+            if (entry.goalId) {
+                goalMinutes += minutes;
+            }
+
+        });
+
+
+        const focusStreak =
+            calculateFocusStreak();
+
+
+        const dailyAverage =
+            activeDates.size > 0
+                ? Math.round(
+                    weekMinutes / activeDates.size
+                )
+                : 0;
+
+
+        const totalMinutes =
+            timeEntries.reduce(
+                function (total, entry) {
+
+                    return total +
+                        (Number(entry.durationMinutes) || 0);
+
+                },
+                0
+            );
+
+
+        const goalFocus =
+            totalMinutes > 0
+                ? Math.round(
+                    (goalMinutes / totalMinutes) * 100
+                )
+                : 0;
+
+
+        setText(
+            "focusStreak",
+            focusStreak + " Days"
+        );
+
+
+        setText(
+            "dailyAverage",
+            formatDuration(dailyAverage)
+        );
+
+
+        setText(
+            "goalFocus",
+            goalFocus + "%"
+        );
+    }
+
+
+    // ==========================================
+    // CALCULATE FOCUS STREAK
+    // ==========================================
+
+    function calculateFocusStreak() {
+
+        const activeDates =
+            new Set();
+
+
+        timeEntries.forEach(function (entry) {
+
+            const date =
+                new Date(entry.startTime);
+
+
+            if (!Number.isNaN(date.getTime())) {
+
+                activeDates.add(
+                    getDateKey(date)
+                );
+            }
+
+        });
+
+
+        if (activeDates.size === 0) {
+            return 0;
         }
+
+
+        const today =
+            new Date();
+
+
+        today.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        let cursor =
+            new Date(today);
+
+
+        /*
+         * If the user has not tracked time today,
+         * continue the streak from yesterday.
+         */
+
+        if (
+            !activeDates.has(
+                getDateKey(cursor)
+            )
+        ) {
+
+            cursor.setDate(
+                cursor.getDate() - 1
+            );
+        }
+
+
+        let streak = 0;
+
+
+        while (
+            activeDates.has(
+                getDateKey(cursor)
+            )
+        ) {
+
+            streak++;
+
+
+            cursor.setDate(
+                cursor.getDate() - 1
+            );
+        }
+
+
+        return streak;
     }
 
 
@@ -711,7 +1006,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updateWeeklySummary() {
 
         const days =
-            document.querySelectorAll(".week-grid .day");
+            document.querySelectorAll(
+                ".week-grid .day"
+            );
+
 
         if (days.length !== 7) {
             return;
@@ -722,16 +1020,37 @@ document.addEventListener("DOMContentLoaded", async function () {
             [0, 0, 0, 0, 0, 0, 0];
 
 
+        const startOfWeek =
+            getStartOfWeek();
+
+
         timeEntries.forEach(function (entry) {
 
             const date =
                 new Date(entry.startTime);
 
+
+            if (
+                Number.isNaN(date.getTime())
+            ) {
+                return;
+            }
+
+
+            if (date < startOfWeek) {
+                return;
+            }
+
+
             const day =
                 date.getDay();
 
+
             const index =
-                day === 0 ? 6 : day - 1;
+                day === 0
+                    ? 6
+                    : day - 1;
+
 
             totals[index] +=
                 Number(entry.durationMinutes) || 0;
@@ -739,23 +1058,33 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         const max =
-            Math.max(...totals, 1);
+            Math.max(...totals);
 
 
         days.forEach(function (day, index) {
 
             const bar =
-                day.querySelector(".day-bar div");
+                day.querySelector(
+                    ".day-bar div"
+                );
+
+
+            const minutes =
+                totals[index];
+
 
             const hours =
-                totals[index] / 60;
+                minutes / 60;
 
 
             const percentage =
-                (totals[index] / max) * 100;
+                max > 0
+                    ? (minutes / max) * 100
+                    : 0;
 
 
             if (bar) {
+
                 bar.style.height =
                     percentage + "%";
             }
@@ -764,18 +1093,56 @@ document.addEventListener("DOMContentLoaded", async function () {
             const value =
                 day.querySelector("strong");
 
+
             if (value) {
 
                 value.textContent =
-                    Math.round(hours * 10) /
-                    10 + "h";
+                    formatHours(hours);
             }
+
         });
     }
 
 
     // ==========================================
-    // HELPERS
+    // START OF CURRENT WEEK
+    // ==========================================
+
+    function getStartOfWeek() {
+
+        const date =
+            new Date();
+
+
+        date.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        const day =
+            date.getDay();
+
+
+        const difference =
+            day === 0
+                ? 6
+                : day - 1;
+
+
+        date.setDate(
+            date.getDate() - difference
+        );
+
+
+        return date;
+    }
+
+
+    // ==========================================
+    // FORMAT DURATION
     // ==========================================
 
     function formatDuration(minutes) {
@@ -783,11 +1150,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         minutes =
             Number(minutes) || 0;
 
+
         const hours =
-            Math.floor(minutes / 60);
+            Math.floor(
+                minutes / 60
+            );
+
 
         const mins =
-            minutes % 60;
+            Math.round(
+                minutes % 60
+            );
 
 
         return (
@@ -799,6 +1172,35 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
+    // ==========================================
+    // FORMAT HOURS
+    // ==========================================
+
+    function formatHours(hours) {
+
+        if (hours === 0) {
+            return "0h";
+        }
+
+
+        if (
+            Number.isInteger(hours)
+        ) {
+
+            return hours + "h";
+        }
+
+
+        return (
+            Math.round(hours * 10) / 10
+        ) + "h";
+    }
+
+
+    // ==========================================
+    // FORMAT DATE
+    // ==========================================
+
     function formatDate(dateString) {
 
         if (!dateString) {
@@ -806,9 +1208,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        return new Date(
-            dateString
-        ).toLocaleDateString(
+        const date =
+            new Date(dateString);
+
+
+        if (Number.isNaN(date.getTime())) {
+            return "-";
+        }
+
+
+        return date.toLocaleDateString(
             "en-GB",
             {
                 day: "2-digit",
@@ -819,6 +1228,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
+    // ==========================================
+    // FORMAT TIME
+    // ==========================================
+
     function formatTime(dateString) {
 
         if (!dateString) {
@@ -826,9 +1239,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        return new Date(
-            dateString
-        ).toLocaleTimeString(
+        const date =
+            new Date(dateString);
+
+
+        if (Number.isNaN(date.getTime())) {
+            return "-";
+        }
+
+
+        return date.toLocaleTimeString(
             "en-US",
             {
                 hour: "2-digit",
@@ -838,30 +1258,39 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
+    // ==========================================
+    // FORMAT DATETIME
+    // ==========================================
+
     function formatDateTime(date) {
 
         const year =
             date.getFullYear();
+
 
         const month =
             String(
                 date.getMonth() + 1
             ).padStart(2, "0");
 
+
         const day =
             String(
                 date.getDate()
             ).padStart(2, "0");
+
 
         const hours =
             String(
                 date.getHours()
             ).padStart(2, "0");
 
+
         const minutes =
             String(
                 date.getMinutes()
             ).padStart(2, "0");
+
 
         const seconds =
             String(
@@ -884,6 +1313,84 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
     }
 
+
+    // ==========================================
+    // LOCAL DATE
+    // ==========================================
+
+    function getLocalDateString() {
+
+        const date =
+            new Date();
+
+
+        const year =
+            date.getFullYear();
+
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
+
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(2, "0");
+
+
+        return (
+            year +
+            "-" +
+            month +
+            "-" +
+            day
+        );
+    }
+
+
+    // ==========================================
+    // DATE KEY
+    // ==========================================
+
+    function getDateKey(date) {
+
+        return (
+            date.getFullYear() +
+            "-" +
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0") +
+            "-" +
+            String(
+                date.getDate()
+            ).padStart(2, "0")
+        );
+    }
+
+
+    // ==========================================
+    // SET TEXT
+    // ==========================================
+
+    function setText(id, value) {
+
+        const element =
+            document.getElementById(id);
+
+
+        if (element) {
+
+            element.textContent =
+                value;
+        }
+    }
+
+
+    // ==========================================
+    // ESCAPE HTML
+    // ==========================================
 
     function escapeHtml(value) {
 
@@ -910,11 +1417,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     await getUserId();
 
+
     if (userId) {
 
         await loadGoals();
 
         await loadTimeEntries();
+
     }
 
 });

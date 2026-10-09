@@ -33,7 +33,6 @@
 
             </div>
 
-
             <nav class="sidebar-nav">
 
                 <p class="nav-title">MAIN MENU</p>
@@ -72,7 +71,6 @@
 
             </nav>
 
-
             <div class="sidebar-bottom">
 
                 <div class="productivity-box">
@@ -98,7 +96,6 @@
 
         <main class="main-content">
 
-
             <!-- ================= HEADER ================= -->
 
             <header class="top-header">
@@ -113,7 +110,6 @@
 
                 </div>
 
-
                 <div class="header-actions">
 
                     <button class="notification-btn">
@@ -121,18 +117,19 @@
                         <span class="notification-dot"></span>
                     </button>
 
+                    <!-- Dynamic user profile -->
 
                     <div class="user-profile">
 
                         <div class="avatar">
-                            P
+                            U
                         </div>
 
                         <div class="user-info">
 
-                            <strong>Palak</strong>
+                            <strong>User</strong>
 
-                            <span>User</span>
+                            <span>USER</span>
 
                         </div>
 
@@ -161,7 +158,6 @@
 
                     </div>
 
-
                     <select class="period-select">
 
                         <option>This Week</option>
@@ -177,7 +173,6 @@
                 <!-- SUMMARY CARDS -->
 
                 <div class="progress-summary">
-
 
                     <!-- TOTAL GOALS -->
 
@@ -279,7 +274,6 @@
 
             <section class="content-grid">
 
-
                 <!-- GOAL COMPLETION -->
 
                 <div class="card progress-overview">
@@ -303,7 +297,6 @@
 
                     <div class="completion-container">
 
-
                         <div class="circle-progress">
 
                             <div class="circle-inner">
@@ -322,7 +315,6 @@
 
 
                         <div class="completion-details">
-
 
                             <div class="completion-item">
 
@@ -383,7 +375,7 @@
                             <h2>Weekly Progress</h2>
 
                             <p>
-                                Your productivity this week
+                                Your tracked activity this week
                             </p>
 
                         </div>
@@ -393,95 +385,91 @@
                     </div>
 
 
-                    <div class="weekly-chart">
+                    <!-- JavaScript will populate this -->
+
+                    <div class="weekly-chart" id="weeklyChart">
 
                         <div class="chart-row">
 
                             <span>Mon</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 75%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>75%</strong>
+                            <strong>0%</strong>
 
                         </div>
-
 
                         <div class="chart-row">
 
                             <span>Tue</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 85%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>85%</strong>
+                            <strong>0%</strong>
 
                         </div>
-
 
                         <div class="chart-row">
 
                             <span>Wed</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 60%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>60%</strong>
+                            <strong>0%</strong>
 
                         </div>
-
 
                         <div class="chart-row">
 
                             <span>Thu</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 90%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>90%</strong>
+                            <strong>0%</strong>
 
                         </div>
-
 
                         <div class="chart-row">
 
                             <span>Fri</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 70%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>70%</strong>
+                            <strong>0%</strong>
 
                         </div>
-
 
                         <div class="chart-row">
 
                             <span>Sat</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 50%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>50%</strong>
+                            <strong>0%</strong>
 
                         </div>
-
 
                         <div class="chart-row">
 
                             <span>Sun</span>
 
                             <div class="bar-container">
-                                <div class="bar" style="width: 40%;"></div>
+                                <div class="bar" style="width: 0%;"></div>
                             </div>
 
-                            <strong>40%</strong>
+                            <strong>0%</strong>
 
                         </div>
 
@@ -508,7 +496,6 @@
 
                     </div>
 
-
                     <a href="goals.html" class="view-goals">
 
                         Manage Goals
@@ -520,12 +507,10 @@
                 </div>
 
 
-                <!-- JavaScript will insert goals here -->
-
                 <div class="goal-list" id="goalList">
 
                     <p id="noGoalsMessage">
-                        No goals found. Create a goal to start tracking your progress.
+                        Loading goals...
                     </p>
 
                 </div>
@@ -536,7 +521,6 @@
             <!-- ================= BOTTOM GRID ================= -->
 
             <section class="bottom-grid">
-
 
                 <!-- ACHIEVEMENTS -->
 
@@ -559,70 +543,13 @@
                     </div>
 
 
-                    <div class="achievement-list">
+                    <!-- JavaScript will populate achievements -->
 
+                    <div class="achievement-list" id="achievementList">
 
-                        <div class="achievement">
-
-                            <div class="achievement-icon">
-                                <i class="fas fa-fire"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    7 Day Streak
-                                </strong>
-
-                                <p>
-                                    Stayed productive for 7 days.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="achievement">
-
-                            <div class="achievement-icon">
-                                <i class="fas fa-check-double"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Goal Crusher
-                                </strong>
-
-                                <p>
-                                    Completed 3 personal goals.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="achievement">
-
-                            <div class="achievement-icon">
-                                <i class="fas fa-hourglass-half"></i>
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Time Master
-                                </strong>
-
-                                <p>
-                                    Tracked more than 20 hours.
-                                </p>
-
-                            </div>
-
-                        </div>
+                        <p>
+                            Loading achievements...
+                        </p>
 
                     </div>
 
@@ -720,6 +647,7 @@
 
     <!-- ================= JAVASCRIPT ================= -->
 
+    <script src="../js/user-header.js"></script>
     <script src="../js/progress.js"></script>
 
 </body>
