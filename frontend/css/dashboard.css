@@ -280,7 +280,7 @@ tbody tr:hover {
     margin-bottom: 22px;
 }
 
-.progress-item > div {
+.progress-item>div {
     display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
@@ -353,4 +353,159 @@ progress {
     td {
         padding: 9px 6px;
     }
+}
+
+/* ================================
+   NEW DASHBOARD FORMS
+================================ */
+
+#goalFormSection,
+#timeFormSection {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+#goalFormSection h2,
+#timeFormSection h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+#goalForm,
+#timeForm {
+    display: grid;
+    gap: 15px;
+}
+
+#goalForm label,
+#timeForm label {
+    font-weight: 600;
+    color: #475569;
+}
+
+#goalForm input,
+#goalForm textarea,
+#timeForm input,
+#timeForm select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+#goalForm input:focus,
+#goalForm textarea:focus,
+#timeForm input:focus,
+#timeForm select:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+#goalForm textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+
+/* ================================
+   FORM BUTTONS
+================================ */
+
+#goalForm button,
+#timeForm button {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+#goalForm button[type="submit"],
+#timeForm button[type="submit"] {
+    background: #2563eb;
+    color: white;
+}
+
+#goalForm button[type="submit"]:hover,
+#timeForm button[type="submit"]:hover {
+    background: #1d4ed8;
+}
+
+#cancelGoalBtn,
+#cancelTimeBtn {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+#cancelGoalBtn:hover,
+#cancelTimeBtn:hover {
+    background: #cbd5e1;
+}
+
+
+/* ================================
+   PROGRESS BUTTON
+================================ */
+
+#updateProgressBtn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#updateProgressBtn:hover {
+    background: #1d4ed8;
+}
+
+
+/* ================================
+   DEADLINES
+================================ */
+
+#deadlinesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.deadline-card {
+    background: #f8fafc;
+    border-left: 4px solid #3b82f6;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.deadline-card h3 {
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+
+.deadline-card p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* ================================
+   ACTIVITY
+================================ */
+
+#activityList li {
+    padding: 14px 5px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#activityList li:last-child {
+    border-bottom: none;
 }

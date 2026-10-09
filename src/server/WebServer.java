@@ -11,6 +11,7 @@ import progress.ProgressService;
 import timetracking.TimeEntry;
 import timetracking.TimeTrackingService;
 import user.User;
+import user.UserProfile;
 import user.UserService;
 
 import java.io.IOException;
@@ -23,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,20 +53,26 @@ public class WebServer {
                  * SINGLE API ENTRY POINT
                  * ================================
                  */
-                server.createContext("/api/", exchange -> handleApi(
-                                exchange,
-                                userService,
-                                goalService,
-                                progressService,
-                                timeTrackingService,
-                                adminService));
+
+                server.createContext(
+                                "/api/",
+                                exchange -> handleApi(
+                                                exchange,
+                                                userService,
+                                                goalService,
+                                                progressService,
+                                                timeTrackingService,
+                                                adminService));
 
                 /*
                  * ================================
                  * SINGLE FRONTEND ENTRY POINT
                  * ================================
                  */
-                server.createContext("/", WebServer::serveFrontend);
+
+                server.createContext(
+                                "/",
+                                WebServer::serveFrontend);
 
                 server.start();
 
@@ -83,6 +89,7 @@ public class WebServer {
          * API ROUTER
          * ================================
          */
+
         private static void handleApi(
                         HttpExchange exchange,
                         UserService userService,
@@ -93,47 +100,135 @@ public class WebServer {
 
                 addCorsHeaders(exchange);
 
-                if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
+                if ("OPTIONS".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
                         exchange.sendResponseHeaders(204, -1);
                         exchange.close();
                         return;
                 }
 
                 String path = exchange.getRequestURI().getPath();
-                System.out.println("API request: " + exchange.getRequestMethod() + " " + path);
+
+                System.out.println(
+                                "API request: "
+                                                + exchange.getRequestMethod()
+                                                + " "
+                                                + path);
+
+                /*
+                 * LOGIN
+                 */
 
                 if (path.equals("/api/login")) {
-                        handleLogin(exchange, userService);
+
+                        handleLogin(
+                                        exchange,
+                                        userService);
+
                         return;
                 }
+
+                /*
+                 * REGISTER
+                 */
 
                 if (path.equals("/api/register")) {
-                        handleRegister(exchange, userService);
+
+                        handleRegister(
+                                        exchange,
+                                        userService);
+
                         return;
                 }
 
-                if (path.equals("/api/goals") || path.startsWith("/api/goals/")) {
-                        handleGoals(exchange, goalService, userService);
+                /*
+                 * USER ID
+                 */
+
+                if (path.equals("/api/user/id")) {
+
+                        handleGetUserId(
+                                        exchange,
+                                        userService);
+
                         return;
                 }
 
-                if (path.equals("/api/progress") || path.startsWith("/api/progress/")) {
-                        handleProgress(exchange, progressService);
+                /*
+                 * USER PROFILE
+                 */
+
+                if (path.equals("/api/user/profile")) {
+
+                        handleGetUserProfile(
+                                        exchange,
+                                        userService);
+
                         return;
                 }
 
-                if (path.equals("/api/time-tracking") ||
-                                path.startsWith("/api/time-tracking/")) {
-                        handleTimeTracking(exchange, timeTrackingService);
+                /*
+                 * GOALS
+                 */
+
+                if (path.equals("/api/goals")
+                                || path.startsWith("/api/goals/")) {
+
+                        handleGoals(
+                                        exchange,
+                                        goalService,
+                                        userService);
+
                         return;
                 }
 
-                if (path.equals("/api/admin") || path.startsWith("/api/admin/")) {
-                        handleAdmin(exchange, adminService);
+                /*
+                 * PROGRESS
+                 */
+
+                if (path.equals("/api/progress")
+                                || path.startsWith("/api/progress/")) {
+
+                        handleProgress(
+                                        exchange,
+                                        progressService);
+
                         return;
                 }
 
-                sendResponse(exchange, 404, "API route not found");
+                /*
+                 * TIME TRACKING
+                 */
+
+                if (path.equals("/api/time-tracking")
+                                || path.startsWith("/api/time-tracking/")) {
+
+                        handleTimeTracking(
+                                        exchange,
+                                        timeTrackingService);
+
+                        return;
+                }
+
+                /*
+                 * ADMIN
+                 */
+
+                if (path.equals("/api/admin")
+                                || path.startsWith("/api/admin/")) {
+
+                        handleAdmin(
+                                        exchange,
+                                        adminService);
+
+                        return;
+                }
+
+                sendResponse(
+                                exchange,
+                                404,
+                                "API route not found");
         }
 
         /*
@@ -142,31 +237,57 @@ public class WebServer {
          * POST /api/login
          * ================================
          */
+
         private static void handleLogin(
                         HttpExchange exchange,
                         UserService userService) throws IOException {
 
-                if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                if (!"POST".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                Map<String, String> formData = parseFormData(readBody(exchange));
+                Map<String, String> formData = parseFormData(
+                                readBody(exchange));
 
                 String email = formData.get("email");
+
                 String password = formData.get("password");
 
-                if (isBlank(email) || isBlank(password)) {
-                        sendResponse(exchange, 400, "Email and Password are required");
+                if (isBlank(email)
+                                || isBlank(password)) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Email and Password are required");
+
                         return;
                 }
 
-                boolean result = userService.loginUser(email.trim(), password);
+                boolean result = userService.loginUser(
+                                email.trim(),
+                                password);
 
                 if (result) {
-                        sendResponse(exchange, 200, "Login Successful");
+
+                        sendResponse(
+                                        exchange,
+                                        200,
+                                        "Login Successful");
+
                 } else {
-                        sendResponse(exchange, 401, "Invalid Email or Password");
+
+                        sendResponse(
+                                        exchange,
+                                        401,
+                                        "Invalid Email or Password");
                 }
         }
 
@@ -176,35 +297,64 @@ public class WebServer {
          * POST /api/register
          * ================================
          */
+
         private static void handleRegister(
                         HttpExchange exchange,
                         UserService userService) throws IOException {
 
-                if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                if (!"POST".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                Map<String, String> formData = parseFormData(readBody(exchange));
+                Map<String, String> formData = parseFormData(
+                                readBody(exchange));
 
                 String name = formData.get("name");
+
                 String email = formData.get("email");
+
                 String password = formData.get("password");
+
                 String confirmPassword = formData.get("confirmPassword");
 
-                if (isBlank(name) || isBlank(email) ||
-                                isBlank(password) || isBlank(confirmPassword)) {
-                        sendResponse(exchange, 400, "All fields are required");
+                if (isBlank(name)
+                                || isBlank(email)
+                                || isBlank(password)
+                                || isBlank(confirmPassword)) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "All fields are required");
+
                         return;
                 }
 
                 if (!password.equals(confirmPassword)) {
-                        sendResponse(exchange, 400, "Passwords do not match");
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Passwords do not match");
+
                         return;
                 }
 
-                if (userService.emailExists(email.trim())) {
-                        sendResponse(exchange, 409, "Email already exists");
+                if (userService.emailExists(
+                                email.trim())) {
+
+                        sendResponse(
+                                        exchange,
+                                        409,
+                                        "Email already exists");
+
                         return;
                 }
 
@@ -217,119 +367,365 @@ public class WebServer {
                 boolean result = userService.registerUser(user);
 
                 if (result) {
-                        sendResponse(exchange, 201, "Registration Successful");
+
+                        sendResponse(
+                                        exchange,
+                                        201,
+                                        "Registration Successful");
+
                 } else {
-                        sendResponse(exchange, 500, "Registration Failed");
+
+                        sendResponse(
+                                        exchange,
+                                        500,
+                                        "Registration Failed");
                 }
         }
 
         /*
          * ================================
-         * GOALS
-         * POST /api/goals
-         * GET /api/goals/{goalId}
-         * GET /api/goals/user/{userId}
-         * PUT /api/goals/{goalId}
-         * DELETE /api/goals/{goalId}
+         * USER PROFILE
+         * GET /api/user/profile?email=
          * ================================
          */
+
+        private static void handleGetUserProfile(
+                        HttpExchange exchange,
+                        UserService userService) throws IOException {
+
+                if (!"GET".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
+                        return;
+                }
+
+                String email = getQueryParameter(
+                                exchange.getRequestURI()
+                                                .getRawQuery(),
+                                "email");
+
+                if (email == null
+                                || email.isBlank()) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Email is required");
+
+                        return;
+                }
+
+                UserProfile profile = userService.getUserProfileByEmail(
+                                email);
+
+                if (profile == null) {
+
+                        sendResponse(
+                                        exchange,
+                                        404,
+                                        "User not found");
+
+                        return;
+                }
+
+                String json = "{"
+                                + "\"userId\":"
+                                + profile.getUserId()
+                                + ","
+
+                                + "\"name\":"
+                                + jsonString(profile.getName())
+                                + ","
+
+                                + "\"email\":"
+                                + jsonString(profile.getEmail())
+                                + ","
+
+                                + "\"role\":"
+                                + jsonString(profile.getRole())
+                                + ","
+
+                                + "\"createdAt\":"
+                                + jsonString(profile.getCreatedAt())
+
+                                + "}";
+
+                sendJson(
+                                exchange,
+                                200,
+                                json);
+        }
+
+        /*
+         * ================================
+         * USER ID
+         * GET /api/user/id?email=
+         * ================================
+         */
+
+        private static void handleGetUserId(
+                        HttpExchange exchange,
+                        UserService userService) throws IOException {
+
+                if (!"GET".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
+                        return;
+                }
+
+                String email = getQueryParameter(
+                                exchange.getRequestURI()
+                                                .getRawQuery(),
+                                "email");
+
+                if (email == null
+                                || email.isBlank()) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Email is required");
+
+                        return;
+                }
+
+                int userId = userService.getUserIdByEmail(
+                                email.trim());
+
+                if (userId == -1) {
+
+                        sendResponse(
+                                        exchange,
+                                        404,
+                                        "User not found");
+
+                        return;
+                }
+
+                sendResponse(
+                                exchange,
+                                200,
+                                String.valueOf(userId));
+        }
+
+        /*
+         * ================================
+         * GOALS
+         * ================================
+         */
+
         private static void handleGoals(
                         HttpExchange exchange,
                         GoalService goalService,
                         UserService userService) throws IOException {
 
                 String method = exchange.getRequestMethod();
-                String path = exchange.getRequestURI().getPath();
+
+                String path = exchange.getRequestURI()
+                                .getPath();
+
+                /*
+                 * POST /api/goals
+                 */
 
                 if (path.equals("/api/goals")) {
 
                         if ("POST".equalsIgnoreCase(method)) {
-                                createGoal(exchange, goalService, userService);
+
+                                createGoal(
+                                                exchange,
+                                                goalService,
+                                                userService);
+
                                 return;
                         }
 
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                String remainder = path.substring("/api/goals/".length());
+                String remainder = path.substring(
+                                "/api/goals/".length());
+
+                /*
+                 * GET /api/goals/user/{userId}
+                 */
 
                 if (remainder.startsWith("user/")) {
 
                         if (!"GET".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        Integer userId = parseInt(remainder.substring("user/".length()));
+                        Integer userId = parseInt(
+                                        remainder.substring(
+                                                        "user/".length()));
 
                         if (userId == null) {
-                                sendResponse(exchange, 400, "Invalid userId");
+
+                                sendResponse(
+                                                exchange,
+                                                400,
+                                                "Invalid userId");
+
                                 return;
                         }
 
-                        List<Goal> goals = goalService.getGoalsByUser(userId);
-                        sendJson(exchange, 200, goalsToJson(goals));
+                        List<Goal> goals = goalService.getGoalsByUser(
+                                        userId);
+
+                        sendJson(
+                                        exchange,
+                                        200,
+                                        goalsToJson(goals));
+
                         return;
                 }
 
                 Integer goalId = parseInt(remainder);
 
                 if (goalId == null) {
-                        sendResponse(exchange, 400, "Invalid goalId");
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Invalid goalId");
+
                         return;
                 }
+
+                /*
+                 * GET /api/goals/{goalId}
+                 */
 
                 if ("GET".equalsIgnoreCase(method)) {
 
-                        Goal goal = goalService.getGoalById(goalId);
+                        Goal goal = goalService.getGoalById(
+                                        goalId);
 
                         if (goal == null) {
-                                sendResponse(exchange, 404, "Goal not found");
+
+                                sendResponse(
+                                                exchange,
+                                                404,
+                                                "Goal not found");
+
                         } else {
-                                sendJson(exchange, 200, goalToJson(goal));
+
+                                sendJson(
+                                                exchange,
+                                                200,
+                                                goalToJson(goal));
                         }
+
                         return;
                 }
+
+                /*
+                 * PUT /api/goals/{goalId}
+                 */
 
                 if ("PUT".equalsIgnoreCase(method)) {
-                        updateGoal(exchange, goalService, goalId);
+
+                        updateGoal(
+                                        exchange,
+                                        goalService,
+                                        goalId);
+
                         return;
                 }
+
+                /*
+                 * DELETE /api/goals/{goalId}
+                 */
 
                 if ("DELETE".equalsIgnoreCase(method)) {
+
                         goalService.deleteGoal(goalId);
-                        sendResponse(exchange, 200, "Goal delete request completed");
+
+                        sendResponse(
+                                        exchange,
+                                        200,
+                                        "Goal delete request completed");
+
                         return;
                 }
 
-                sendResponse(exchange, 405, "Method Not Allowed");
+                sendResponse(
+                                exchange,
+                                405,
+                                "Method Not Allowed");
         }
+
+        /*
+         * CREATE GOAL
+         */
 
         private static void createGoal(
                         HttpExchange exchange,
                         GoalService goalService,
                         UserService userService) throws IOException {
 
-                Map<String, String> data = parseFormData(readBody(exchange));
+                Map<String, String> data = parseFormData(
+                                readBody(exchange));
 
                 String email = data.get("email");
+
                 String goalName = data.get("goalName");
+
                 String description = data.get("description");
-                Double target = parseDouble(data.get("target"));
-                LocalDate deadline = parseDate(data.get("deadline"));
+
+                Double target = parseDouble(
+                                data.get("target"));
+
+                LocalDate deadline = parseDate(
+                                data.get("deadline"));
+
                 String status = data.get("status");
 
-                if (isBlank(email) || isBlank(goalName) ||
-                                target == null || deadline == null) {
-                        sendResponse(exchange, 400,
+                if (isBlank(email)
+                                || isBlank(goalName)
+                                || target == null
+                                || deadline == null) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
                                         "Required fields: email, goalName, target, deadline");
+
                         return;
                 }
 
-                int userId = userService.getUserIdByEmail(email.trim());
+                int userId = userService.getUserIdByEmail(
+                                email.trim());
+
                 if (userId <= 0) {
-                        sendResponse(exchange, 401, "User not found. Please log in again.");
+
+                        sendResponse(
+                                        exchange,
+                                        401,
+                                        "User not found. Please log in again.");
+
                         return;
                 }
 
@@ -341,39 +737,68 @@ public class WebServer {
                                 0,
                                 userId,
                                 goalName.trim(),
-                                description == null ? "" : description.trim(),
+                                description == null
+                                                ? ""
+                                                : description.trim(),
                                 target,
                                 deadline,
                                 status.trim());
 
                 goalService.createGoal(goal);
-                sendResponse(exchange, 201, "Goal creation request completed");
+
+                sendResponse(
+                                exchange,
+                                201,
+                                "Goal creation request completed");
         }
+
+        /*
+         * UPDATE GOAL
+         */
 
         private static void updateGoal(
                         HttpExchange exchange,
                         GoalService goalService,
                         int goalId) throws IOException {
 
-                Goal existing = goalService.getGoalById(goalId);
+                Goal existing = goalService.getGoalById(
+                                goalId);
 
                 if (existing == null) {
-                        sendResponse(exchange, 404, "Goal not found");
+
+                        sendResponse(
+                                        exchange,
+                                        404,
+                                        "Goal not found");
+
                         return;
                 }
 
-                Map<String, String> data = parseFormData(readBody(exchange));
+                Map<String, String> data = parseFormData(
+                                readBody(exchange));
 
                 String goalName = data.get("goalName");
+
                 String description = data.get("description");
-                Double target = parseDouble(data.get("target"));
-                LocalDate deadline = parseDate(data.get("deadline"));
+
+                Double target = parseDouble(
+                                data.get("target"));
+
+                LocalDate deadline = parseDate(
+                                data.get("deadline"));
+
                 String status = data.get("status");
 
-                if (isBlank(goalName) || target == null ||
-                                deadline == null || isBlank(status)) {
-                        sendResponse(exchange, 400,
+                if (isBlank(goalName)
+                                || target == null
+                                || deadline == null
+                                || isBlank(status)) {
+
+                        sendResponse(
+                                        exchange,
+                                        400,
                                         "Required fields: goalName, target, deadline, status");
+
                         return;
                 }
 
@@ -381,126 +806,221 @@ public class WebServer {
                                 goalId,
                                 existing.getUserId(),
                                 goalName.trim(),
-                                description == null ? "" : description.trim(),
+                                description == null
+                                                ? ""
+                                                : description.trim(),
                                 target,
                                 deadline,
                                 status.trim());
 
                 goalService.updateGoal(updated);
-                sendResponse(exchange, 200, "Goal update request completed");
+
+                sendResponse(
+                                exchange,
+                                200,
+                                "Goal update request completed");
         }
 
         /*
          * ================================
          * PROGRESS
-         * POST /api/progress
-         * GET /api/progress/{goalId}
          * ================================
          */
+
         private static void handleProgress(
                         HttpExchange exchange,
                         ProgressService progressService) throws IOException {
 
                 String method = exchange.getRequestMethod();
-                String path = exchange.getRequestURI().getPath();
+
+                String path = exchange.getRequestURI()
+                                .getPath();
+
+                /*
+                 * POST /api/progress
+                 */
 
                 if (path.equals("/api/progress")) {
 
                         if (!"POST".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        Map<String, String> data = parseFormData(readBody(exchange));
+                        Map<String, String> data = parseFormData(
+                                        readBody(exchange));
 
-                        Integer goalId = parseInt(data.get("goalId"));
-                        Double percentage = parseDouble(data.get("percentage"));
+                        Integer goalId = parseInt(
+                                        data.get("goalId"));
 
-                        if (goalId == null || percentage == null) {
-                                sendResponse(exchange, 400,
+                        Double percentage = parseDouble(
+                                        data.get("percentage"));
+
+                        if (goalId == null
+                                        || percentage == null) {
+
+                                sendResponse(
+                                                exchange,
+                                                400,
                                                 "Required fields: goalId, percentage");
+
                                 return;
                         }
 
-                        if (percentage < 0 || percentage > 100) {
-                                sendResponse(exchange, 400,
+                        if (percentage < 0
+                                        || percentage > 100) {
+
+                                sendResponse(
+                                                exchange,
+                                                400,
                                                 "Progress must be between 0 and 100");
+
                                 return;
                         }
 
-                        progressService.updateProgress(goalId, percentage);
-                        sendResponse(exchange, 200, "Progress update request completed");
+                        progressService.updateProgress(
+                                        goalId,
+                                        percentage);
+
+                        sendResponse(
+                                        exchange,
+                                        200,
+                                        "Progress update request completed");
+
                         return;
                 }
 
-                if (!path.startsWith("/api/progress/")) {
-                        sendResponse(exchange, 404, "Progress route not found");
+                /*
+                 * GET /api/progress/{goalId}
+                 */
+
+                if (!path.startsWith(
+                                "/api/progress/")) {
+
+                        sendResponse(
+                                        exchange,
+                                        404,
+                                        "Progress route not found");
+
                         return;
                 }
 
                 if (!"GET".equalsIgnoreCase(method)) {
-                        sendResponse(exchange, 405, "Method Not Allowed");
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
                 Integer goalId = parseInt(
-                                path.substring("/api/progress/".length()));
+                                path.substring(
+                                                "/api/progress/"
+                                                                .length()));
 
                 if (goalId == null) {
-                        sendResponse(exchange, 400, "Invalid goalId");
+
+                        sendResponse(
+                                        exchange,
+                                        400,
+                                        "Invalid goalId");
+
                         return;
                 }
 
-                Progress progress = progressService.getProgressByGoal(goalId);
+                Progress progress = progressService.getProgressByGoal(
+                                goalId);
 
                 if (progress == null) {
-                        sendResponse(exchange, 404, "Progress not found");
+
+                        sendResponse(
+                                        exchange,
+                                        404,
+                                        "Progress not found");
+
                 } else {
-                        sendJson(exchange, 200, progressToJson(progress));
+
+                        sendJson(
+                                        exchange,
+                                        200,
+                                        progressToJson(progress));
                 }
         }
 
         /*
          * ================================
          * TIME TRACKING
-         * POST /api/time-tracking
-         * GET /api/time-tracking/goal/{goalId}
-         * GET /api/time-tracking/user/{userId}
-         * GET /api/time-tracking/goal/{goalId}/total
-         * DELETE /api/time-tracking/{entryId}
          * ================================
          */
+
         private static void handleTimeTracking(
                         HttpExchange exchange,
                         TimeTrackingService timeTrackingService) throws IOException {
 
                 String method = exchange.getRequestMethod();
-                String path = exchange.getRequestURI().getPath();
 
-                if (path.equals("/api/time-tracking")) {
+                String path = exchange.getRequestURI()
+                                .getPath();
+
+                /*
+                 * POST /api/time-tracking
+                 */
+
+                if (path.equals(
+                                "/api/time-tracking")) {
 
                         if (!"POST".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        Map<String, String> data = parseFormData(readBody(exchange));
+                        Map<String, String> data = parseFormData(
+                                        readBody(exchange));
 
-                        Integer userId = parseInt(data.get("userId"));
-                        Integer goalId = parseInt(data.get("goalId"));
-                        LocalDateTime startTime = parseDateTime(data.get("startTime"));
-                        LocalDateTime endTime = parseDateTime(data.get("endTime"));
+                        Integer userId = parseInt(
+                                        data.get("userId"));
 
-                        if (userId == null || goalId == null ||
-                                        startTime == null || endTime == null) {
-                                sendResponse(exchange, 400,
+                        Integer goalId = parseInt(
+                                        data.get("goalId"));
+
+                        LocalDateTime startTime = parseDateTime(
+                                        data.get("startTime"));
+
+                        LocalDateTime endTime = parseDateTime(
+                                        data.get("endTime"));
+
+                        if (userId == null
+                                        || goalId == null
+                                        || startTime == null
+                                        || endTime == null) {
+
+                                sendResponse(
+                                                exchange,
+                                                400,
                                                 "Required fields: userId, goalId, startTime, endTime");
+
                                 return;
                         }
 
                         if (endTime.isBefore(startTime)) {
-                                sendResponse(exchange, 400,
+
+                                sendResponse(
+                                                exchange,
+                                                400,
                                                 "End time cannot be before start time");
+
                                 return;
                         }
 
@@ -512,88 +1032,183 @@ public class WebServer {
                                         endTime,
                                         0);
 
-                        timeTrackingService.addTimeEntry(entry);
-                        sendResponse(exchange, 201, "Time entry request completed");
+                        timeTrackingService.addTimeEntry(
+                                        entry);
+
+                        sendResponse(
+                                        exchange,
+                                        201,
+                                        "Time entry request completed");
+
                         return;
                 }
 
                 String prefix = "/api/time-tracking/";
+
                 String remainder = path.startsWith(prefix)
                                 ? path.substring(prefix.length())
                                 : "";
 
-                if (remainder.startsWith("goal/") && remainder.endsWith("/total")) {
+                /*
+                 * GET /api/time-tracking/goal/{goalId}/total
+                 */
+
+                if (remainder.startsWith("goal/")
+                                && remainder.endsWith("/total")) {
 
                         if (!"GET".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        String goalPart = remainder.substring("goal/".length(),
-                                        remainder.length() - "/total".length());
+                        String goalPart = remainder.substring(
+                                        "goal/".length(),
+                                        remainder.length()
+                                                        - "/total".length());
 
                         Integer goalId = parseInt(goalPart);
 
                         if (goalId == null) {
-                                sendResponse(exchange, 400, "Invalid goalId");
+
+                                sendResponse(
+                                                exchange,
+                                                400,
+                                                "Invalid goalId");
+
                                 return;
                         }
 
-                        int totalMinutes = timeTrackingService.getTotalMinutesForGoal(goalId);
+                        int totalMinutes = timeTrackingService
+                                        .getTotalMinutesForGoal(
+                                                        goalId);
 
-                        sendJson(exchange, 200,
-                                        "{\"goalId\":" + goalId +
-                                                        ",\"totalMinutes\":" + totalMinutes + "}");
+                        sendJson(
+                                        exchange,
+                                        200,
+                                        "{"
+                                                        + "\"goalId\":"
+                                                        + goalId
+                                                        + ","
+                                                        + "\"totalMinutes\":"
+                                                        + totalMinutes
+                                                        + "}");
+
                         return;
                 }
+
+                /*
+                 * GET /api/time-tracking/goal/{goalId}
+                 */
 
                 if (remainder.startsWith("goal/")) {
 
                         if (!"GET".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        Integer goalId = parseInt(remainder.substring("goal/".length()));
+                        Integer goalId = parseInt(
+                                        remainder.substring(
+                                                        "goal/".length()));
 
                         if (goalId == null) {
-                                sendResponse(exchange, 400, "Invalid goalId");
+
+                                sendResponse(
+                                                exchange,
+                                                400,
+                                                "Invalid goalId");
+
                                 return;
                         }
 
-                        List<TimeEntry> entries = timeTrackingService.getEntriesByGoal(goalId);
-                        sendJson(exchange, 200, timeEntriesToJson(entries));
+                        List<TimeEntry> entries = timeTrackingService
+                                        .getEntriesByGoal(
+                                                        goalId);
+
+                        sendJson(
+                                        exchange,
+                                        200,
+                                        timeEntriesToJson(entries));
+
                         return;
                 }
+
+                /*
+                 * GET /api/time-tracking/user/{userId}
+                 */
 
                 if (remainder.startsWith("user/")) {
 
                         if (!"GET".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        Integer userId = parseInt(remainder.substring("user/".length()));
+                        Integer userId = parseInt(
+                                        remainder.substring(
+                                                        "user/".length()));
 
                         if (userId == null) {
-                                sendResponse(exchange, 400, "Invalid userId");
+
+                                sendResponse(
+                                                exchange,
+                                                400,
+                                                "Invalid userId");
+
                                 return;
                         }
 
-                        List<TimeEntry> entries = timeTrackingService.getEntriesByUser(userId);
-                        sendJson(exchange, 200, timeEntriesToJson(entries));
+                        List<TimeEntry> entries = timeTrackingService
+                                        .getEntriesByUser(
+                                                        userId);
+
+                        sendJson(
+                                        exchange,
+                                        200,
+                                        timeEntriesToJson(entries));
+
                         return;
                 }
+
+                /*
+                 * DELETE /api/time-tracking/{entryId}
+                 */
 
                 Integer entryId = parseInt(remainder);
 
-                if (entryId != null && "DELETE".equalsIgnoreCase(method)) {
-                        timeTrackingService.deleteTimeEntry(entryId);
-                        sendResponse(exchange, 200, "Time entry delete request completed");
+                if (entryId != null
+                                && "DELETE".equalsIgnoreCase(method)) {
+
+                        timeTrackingService.deleteTimeEntry(
+                                        entryId);
+
+                        sendResponse(
+                                        exchange,
+                                        200,
+                                        "Time entry delete request completed");
+
                         return;
                 }
 
-                sendResponse(exchange, 404, "Time tracking route not found");
+                sendResponse(
+                                exchange,
+                                404,
+                                "Time tracking route not found");
         }
 
         /*
@@ -601,40 +1216,68 @@ public class WebServer {
          * ADMIN
          * ================================
          */
+
         private static void handleAdmin(
                         HttpExchange exchange,
                         AdminService adminService) throws IOException {
 
                 String method = exchange.getRequestMethod();
-                String path = exchange.getRequestURI().getPath();
+
+                String path = exchange.getRequestURI()
+                                .getPath();
 
                 String prefix = "/api/admin";
+
                 String remainder = path.length() > prefix.length()
                                 ? path.substring(prefix.length())
                                 : "";
 
-                if (remainder.equals("/goal-parameters") ||
-                                remainder.equals("/goal-parameters/")) {
+                /*
+                 * GOAL PARAMETERS
+                 */
+
+                if (remainder.equals(
+                                "/goal-parameters")
+                                || remainder.equals(
+                                                "/goal-parameters/")) {
 
                         if ("GET".equalsIgnoreCase(method)) {
-                                List<GoalParameter> parameters = adminService.getAllGoalParameters();
-                                sendJson(exchange, 200, goalParametersToJson(parameters));
+
+                                List<GoalParameter> parameters = adminService
+                                                .getAllGoalParameters();
+
+                                sendJson(
+                                                exchange,
+                                                200,
+                                                goalParametersToJson(
+                                                                parameters));
+
                                 return;
                         }
 
                         if ("POST".equalsIgnoreCase(method)) {
 
-                                Map<String, String> data = parseFormData(readBody(exchange));
+                                Map<String, String> data = parseFormData(
+                                                readBody(exchange));
 
                                 String goalType = data.get("goalType");
-                                String trackingMetric = data.get("trackingMetric");
-                                String targetUnit = data.get("targetUnit");
-                                Integer createdBy = parseInt(data.get("createdBy"));
 
-                                if (isBlank(goalType) || isBlank(trackingMetric) ||
-                                                isBlank(targetUnit)) {
-                                        sendResponse(exchange, 400,
+                                String trackingMetric = data.get("trackingMetric");
+
+                                String targetUnit = data.get("targetUnit");
+
+                                Integer createdBy = parseInt(
+                                                data.get("createdBy"));
+
+                                if (isBlank(goalType)
+                                                || isBlank(trackingMetric)
+                                                || isBlank(targetUnit)) {
+
+                                        sendResponse(
+                                                        exchange,
+                                                        400,
                                                         "Required fields: goalType, trackingMetric, targetUnit");
+
                                         return;
                                 }
 
@@ -646,38 +1289,67 @@ public class WebServer {
                                                 createdBy,
                                                 LocalDateTime.now());
 
-                                adminService.createGoalParameter(parameter);
-                                sendResponse(exchange, 201,
+                                adminService.createGoalParameter(
+                                                parameter);
+
+                                sendResponse(
+                                                exchange,
+                                                201,
                                                 "Goal parameter creation request completed");
+
                                 return;
                         }
 
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                if (remainder.startsWith("/goal-parameters/")) {
+                /*
+                 * UPDATE / DELETE GOAL PARAMETER
+                 */
+
+                if (remainder.startsWith(
+                                "/goal-parameters/")) {
 
                         Integer parameterId = parseInt(
-                                        remainder.substring("/goal-parameters/".length()));
+                                        remainder.substring(
+                                                        "/goal-parameters/"
+                                                                        .length()));
 
                         if (parameterId == null) {
-                                sendResponse(exchange, 400, "Invalid parameterId");
+
+                                sendResponse(
+                                                exchange,
+                                                400,
+                                                "Invalid parameterId");
+
                                 return;
                         }
 
                         if ("PUT".equalsIgnoreCase(method)) {
 
-                                Map<String, String> data = parseFormData(readBody(exchange));
+                                Map<String, String> data = parseFormData(
+                                                readBody(exchange));
 
                                 String goalType = data.get("goalType");
+
                                 String trackingMetric = data.get("trackingMetric");
+
                                 String targetUnit = data.get("targetUnit");
 
-                                if (isBlank(goalType) || isBlank(trackingMetric) ||
-                                                isBlank(targetUnit)) {
-                                        sendResponse(exchange, 400,
+                                if (isBlank(goalType)
+                                                || isBlank(trackingMetric)
+                                                || isBlank(targetUnit)) {
+
+                                        sendResponse(
+                                                        exchange,
+                                                        400,
                                                         "Required fields: goalType, trackingMetric, targetUnit");
+
                                         return;
                                 }
 
@@ -687,86 +1359,165 @@ public class WebServer {
                                                 trackingMetric.trim(),
                                                 targetUnit.trim());
 
-                                sendResponse(exchange, 200,
+                                sendResponse(
+                                                exchange,
+                                                200,
                                                 "Goal parameter update request completed");
+
                                 return;
                         }
 
                         if ("DELETE".equalsIgnoreCase(method)) {
-                                adminService.deleteGoalParameter(parameterId);
-                                sendResponse(exchange, 200,
+
+                                adminService.deleteGoalParameter(
+                                                parameterId);
+
+                                sendResponse(
+                                                exchange,
+                                                200,
                                                 "Goal parameter delete request completed");
+
                                 return;
                         }
 
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
+
+                /*
+                 * DELETE USER
+                 */
 
                 if (remainder.startsWith("/users/")) {
 
                         Integer userId = parseInt(
-                                        remainder.substring("/users/".length()));
+                                        remainder.substring(
+                                                        "/users/".length()));
 
                         if (userId == null) {
-                                sendResponse(exchange, 400, "Invalid userId");
+
+                                sendResponse(
+                                                exchange,
+                                                400,
+                                                "Invalid userId");
+
                                 return;
                         }
 
                         if (!"DELETE".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 405, "Method Not Allowed");
+
+                                sendResponse(
+                                                exchange,
+                                                405,
+                                                "Method Not Allowed");
+
                                 return;
                         }
 
-                        adminService.deleteUser(userId);
-                        sendResponse(exchange, 200, "User delete request completed");
+                        adminService.deleteUser(
+                                        userId);
+
+                        sendResponse(
+                                        exchange,
+                                        200,
+                                        "User delete request completed");
+
                         return;
                 }
 
-                if (remainder.equals("/usage-logs") ||
-                                remainder.equals("/usage-logs/")) {
+                /*
+                 * USAGE LOGS
+                 */
+
+                if (remainder.equals(
+                                "/usage-logs")
+                                || remainder.equals(
+                                                "/usage-logs/")) {
 
                         if ("POST".equalsIgnoreCase(method)) {
 
-                                Map<String, String> data = parseFormData(readBody(exchange));
+                                Map<String, String> data = parseFormData(
+                                                readBody(exchange));
 
-                                Integer userId = parseInt(data.get("userId"));
+                                Integer userId = parseInt(
+                                                data.get("userId"));
+
                                 String activity = data.get("activity");
 
-                                if (userId == null || isBlank(activity)) {
-                                        sendResponse(exchange, 400,
+                                if (userId == null
+                                                || isBlank(activity)) {
+
+                                        sendResponse(
+                                                        exchange,
+                                                        400,
                                                         "Required fields: userId, activity");
+
                                         return;
                                 }
 
-                                adminService.addUsageLog(userId, activity.trim());
-                                sendResponse(exchange, 201, "Usage log request completed");
+                                adminService.addUsageLog(
+                                                userId,
+                                                activity.trim());
+
+                                sendResponse(
+                                                exchange,
+                                                201,
+                                                "Usage log request completed");
+
                                 return;
                         }
 
                         if ("GET".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 501,
+
+                                sendResponse(
+                                                exchange,
+                                                501,
                                                 "Usage-log listing is currently console-based in AdminService");
+
                                 return;
                         }
 
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                if (remainder.equals("/users") || remainder.equals("/users/")) {
+                /*
+                 * USERS
+                 */
+
+                if (remainder.equals("/users")
+                                || remainder.equals("/users/")) {
 
                         if ("GET".equalsIgnoreCase(method)) {
-                                sendResponse(exchange, 501,
+
+                                sendResponse(
+                                                exchange,
+                                                501,
                                                 "User listing is currently console-based in AdminService");
+
                                 return;
                         }
 
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                sendResponse(exchange, 404, "Admin route not found");
+                sendResponse(
+                                exchange,
+                                404,
+                                "Admin route not found");
         }
 
         /*
@@ -774,28 +1525,44 @@ public class WebServer {
          * FRONTEND SERVER
          * ================================
          */
+
         private static void serveFrontend(
                         HttpExchange exchange) throws IOException {
 
-                if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
-                        sendResponse(exchange, 405, "Method Not Allowed");
+                if (!"GET".equalsIgnoreCase(
+                                exchange.getRequestMethod())) {
+
+                        sendResponse(
+                                        exchange,
+                                        405,
+                                        "Method Not Allowed");
+
                         return;
                 }
 
-                String requestPath = exchange.getRequestURI().getPath();
+                String requestPath = exchange.getRequestURI()
+                                .getPath();
+
                 String relativePath;
 
-                if (requestPath == null || requestPath.equals("/") ||
-                                requestPath.isBlank()) {
+                if (requestPath == null
+                                || requestPath.equals("/")
+                                || requestPath.isBlank()) {
+
                         relativePath = "html/index.html";
+
                 } else {
+
                         relativePath = requestPath.startsWith("/")
                                         ? requestPath.substring(1)
                                         : requestPath;
 
                         if (relativePath.startsWith("html/")) {
+
                                 // Already in frontend/html.
+
                         } else if (relativePath.endsWith(".html")) {
+
                                 relativePath = "html/" + relativePath;
                         }
                 }
@@ -804,12 +1571,20 @@ public class WebServer {
                                 .resolve(relativePath)
                                 .normalize();
 
-                if (!requestedFile.startsWith(FRONTEND_PATH)) {
-                        sendResponse(exchange, 403, "Forbidden");
+                if (!requestedFile.startsWith(
+                                FRONTEND_PATH)) {
+
+                        sendResponse(
+                                        exchange,
+                                        403,
+                                        "Forbidden");
+
                         return;
                 }
 
-                serveFile(exchange, requestedFile);
+                serveFile(
+                                exchange,
+                                requestedFile);
         }
 
         /*
@@ -817,17 +1592,30 @@ public class WebServer {
          * FILE SERVER
          * ================================
          */
+
         private static void serveFile(
                         HttpExchange exchange,
                         Path file) throws IOException {
 
-                if (!file.startsWith(FRONTEND_PATH)) {
-                        sendResponse(exchange, 403, "Forbidden");
+                if (!file.startsWith(
+                                FRONTEND_PATH)) {
+
+                        sendResponse(
+                                        exchange,
+                                        403,
+                                        "Forbidden");
+
                         return;
                 }
 
-                if (!Files.exists(file) || !Files.isRegularFile(file)) {
-                        sendResponse(exchange, 404, "File Not Found");
+                if (!Files.exists(file)
+                                || !Files.isRegularFile(file)) {
+
+                        sendResponse(
+                                        exchange,
+                                        404,
+                                        "File Not Found");
+
                         return;
                 }
 
@@ -837,9 +1625,12 @@ public class WebServer {
                                 "Content-Type",
                                 getContentType(file));
 
-                exchange.sendResponseHeaders(200, bytes.length);
+                exchange.sendResponseHeaders(
+                                200,
+                                bytes.length);
 
                 try (OutputStream output = exchange.getResponseBody()) {
+
                         output.write(bytes);
                 }
         }
@@ -849,17 +1640,24 @@ public class WebServer {
          * PORT
          * ================================
          */
+
         private static int getPort() {
 
                 String port = System.getenv("PORT");
 
-                if (port == null || port.isBlank()) {
+                if (port == null
+                                || port.isBlank()) {
+
                         return 8080;
                 }
 
                 try {
-                        return Integer.parseInt(port);
+
+                        return Integer.parseInt(
+                                        port);
+
                 } catch (NumberFormatException e) {
+
                         return 8080;
                 }
         }
@@ -869,28 +1667,35 @@ public class WebServer {
          * REQUEST HELPERS
          * ================================
          */
+
         private static String readBody(
                         HttpExchange exchange) throws IOException {
 
                 return new String(
-                                exchange.getRequestBody().readAllBytes(),
+                                exchange.getRequestBody()
+                                                .readAllBytes(),
                                 StandardCharsets.UTF_8);
         }
 
-        private static Map<String, String> parseFormData(String data) {
+        private static Map<String, String> parseFormData(
+                        String data) {
 
                 Map<String, String> formData = new HashMap<>();
 
-                if (data == null || data.isBlank()) {
+                if (data == null
+                                || data.isBlank()) {
+
                         return formData;
                 }
 
                 String[] pairs = data.split("&");
 
                 for (String pair : pairs) {
+
                         String[] keyValue = pair.split("=", 2);
 
                         if (keyValue.length == 2) {
+
                                 String key = URLDecoder.decode(
                                                 keyValue[0],
                                                 StandardCharsets.UTF_8);
@@ -899,61 +1704,130 @@ public class WebServer {
                                                 keyValue[1],
                                                 StandardCharsets.UTF_8);
 
-                                formData.put(key, value);
+                                formData.put(
+                                                key,
+                                                value);
                         }
                 }
 
                 return formData;
         }
 
-        private static boolean isBlank(String value) {
-                return value == null || value.isBlank();
+        /*
+         * GET QUERY PARAMETER
+         */
+
+        private static String getQueryParameter(
+                        String query,
+                        String parameter) {
+
+                if (query == null
+                                || query.isBlank()) {
+
+                        return null;
+                }
+
+                String[] pairs = query.split("&");
+
+                for (String pair : pairs) {
+
+                        String[] parts = pair.split("=", 2);
+
+                        if (parts.length == 2
+                                        && parts[0].equals(parameter)) {
+
+                                return URLDecoder.decode(
+                                                parts[1],
+                                                StandardCharsets.UTF_8);
+                        }
+                }
+
+                return null;
         }
 
-        private static Integer parseInt(String value) {
-                if (value == null || value.isBlank()) {
+        private static boolean isBlank(
+                        String value) {
+
+                return value == null
+                                || value.isBlank();
+        }
+
+        private static Integer parseInt(
+                        String value) {
+
+                if (value == null
+                                || value.isBlank()) {
+
                         return null;
                 }
 
                 try {
-                        return Integer.parseInt(value.trim());
+
+                        return Integer.parseInt(
+                                        value.trim());
+
                 } catch (NumberFormatException e) {
+
                         return null;
                 }
         }
 
-        private static Double parseDouble(String value) {
-                if (value == null || value.isBlank()) {
+        private static Double parseDouble(
+                        String value) {
+
+                if (value == null
+                                || value.isBlank()) {
+
                         return null;
                 }
 
                 try {
-                        return Double.parseDouble(value.trim());
+
+                        return Double.parseDouble(
+                                        value.trim());
+
                 } catch (NumberFormatException e) {
+
                         return null;
                 }
         }
 
-        private static LocalDate parseDate(String value) {
-                if (value == null || value.isBlank()) {
+        private static LocalDate parseDate(
+                        String value) {
+
+                if (value == null
+                                || value.isBlank()) {
+
                         return null;
                 }
 
                 try {
-                        return LocalDate.parse(value.trim());
+
+                        return LocalDate.parse(
+                                        value.trim());
+
                 } catch (Exception e) {
+
                         return null;
                 }
         }
 
-        private static LocalDateTime parseDateTime(String value) {
-                if (value == null || value.isBlank()) {
+        private static LocalDateTime parseDateTime(
+                        String value) {
+
+                if (value == null
+                                || value.isBlank()) {
+
                         return null;
                 }
 
                 try {
-                        return LocalDateTime.parse(value.trim());
+
+                        return LocalDateTime.parse(
+                                        value.trim());
+
                 } catch (Exception e) {
+
                         return null;
                 }
         }
@@ -963,10 +1837,13 @@ public class WebServer {
          * CORS
          * ================================
          */
-        private static void addCorsHeaders(HttpExchange exchange) {
+
+        private static void addCorsHeaders(
+                        HttpExchange exchange) {
 
                 exchange.getResponseHeaders().set(
-                                "Access-Control-Allow-Origin", "*");
+                                "Access-Control-Allow-Origin",
+                                "*");
 
                 exchange.getResponseHeaders().set(
                                 "Access-Control-Allow-Methods",
@@ -982,20 +1859,25 @@ public class WebServer {
          * TEXT / JSON RESPONSES
          * ================================
          */
+
         private static void sendResponse(
                         HttpExchange exchange,
                         int statusCode,
                         String response) throws IOException {
 
-                byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+                byte[] bytes = response.getBytes(
+                                StandardCharsets.UTF_8);
 
                 exchange.getResponseHeaders().set(
                                 "Content-Type",
                                 "text/plain; charset=UTF-8");
 
-                exchange.sendResponseHeaders(statusCode, bytes.length);
+                exchange.sendResponseHeaders(
+                                statusCode,
+                                bytes.length);
 
                 try (OutputStream output = exchange.getResponseBody()) {
+
                         output.write(bytes);
                 }
         }
@@ -1005,15 +1887,19 @@ public class WebServer {
                         int statusCode,
                         String json) throws IOException {
 
-                byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+                byte[] bytes = json.getBytes(
+                                StandardCharsets.UTF_8);
 
                 exchange.getResponseHeaders().set(
                                 "Content-Type",
                                 "application/json; charset=UTF-8");
 
-                exchange.sendResponseHeaders(statusCode, bytes.length);
+                exchange.sendResponseHeaders(
+                                statusCode,
+                                bytes.length);
 
                 try (OutputStream output = exchange.getResponseBody()) {
+
                         output.write(bytes);
                 }
         }
@@ -1023,109 +1909,240 @@ public class WebServer {
          * JSON SERIALIZATION
          * ================================
          */
-        private static String goalToJson(Goal goal) {
-                return "{" +
-                                "\"goalId\":" + goal.getGoalId() + "," +
-                                "\"userId\":" + goal.getUserId() + "," +
-                                "\"goalName\":" + jsonString(goal.getGoalName()) + "," +
-                                "\"description\":" + jsonString(goal.getDescription()) + "," +
-                                "\"target\":" + goal.getTarget() + "," +
-                                "\"deadline\":" + jsonString(goal.getDeadline().toString()) + "," +
-                                "\"status\":" + jsonString(goal.getStatus()) +
-                                "}";
+
+        private static String goalToJson(
+                        Goal goal) {
+
+                return "{"
+                                + "\"goalId\":"
+                                + goal.getGoalId()
+                                + ","
+
+                                + "\"userId\":"
+                                + goal.getUserId()
+                                + ","
+
+                                + "\"goalName\":"
+                                + jsonString(
+                                                goal.getGoalName())
+                                + ","
+
+                                + "\"description\":"
+                                + jsonString(
+                                                goal.getDescription())
+                                + ","
+
+                                + "\"target\":"
+                                + goal.getTarget()
+                                + ","
+
+                                + "\"deadline\":"
+                                + jsonString(
+                                                goal.getDeadline()
+                                                                .toString())
+                                + ","
+
+                                + "\"status\":"
+                                + jsonString(
+                                                goal.getStatus())
+
+                                + "}";
         }
 
-        private static String goalsToJson(List<Goal> goals) {
+        private static String goalsToJson(
+                        List<Goal> goals) {
 
                 StringBuilder json = new StringBuilder("[");
 
                 for (int i = 0; i < goals.size(); i++) {
+
                         if (i > 0) {
                                 json.append(',');
                         }
-                        json.append(goalToJson(goals.get(i)));
+
+                        json.append(
+                                        goalToJson(
+                                                        goals.get(i)));
                 }
 
-                return json.append(']').toString();
+                return json
+                                .append(']')
+                                .toString();
         }
 
-        private static String progressToJson(Progress progress) {
-                return "{" +
-                                "\"progressId\":" + progress.getProgressId() + "," +
-                                "\"goalId\":" + progress.getGoalId() + "," +
-                                "\"progressPercentage\":" + progress.getProgressPercentage() + "," +
-                                "\"completionStatus\":" + jsonString(progress.getCompletionStatus()) + "," +
-                                "\"updatedAt\":" + jsonString(progress.getUpdatedAt().toString()) +
-                                "}";
+        private static String progressToJson(
+                        Progress progress) {
+
+                return "{"
+                                + "\"progressId\":"
+                                + progress.getProgressId()
+                                + ","
+
+                                + "\"goalId\":"
+                                + progress.getGoalId()
+                                + ","
+
+                                + "\"progressPercentage\":"
+                                + progress.getProgressPercentage()
+                                + ","
+
+                                + "\"completionStatus\":"
+                                + jsonString(
+                                                progress.getCompletionStatus())
+                                + ","
+
+                                + "\"updatedAt\":"
+                                + jsonString(
+                                                progress.getUpdatedAt()
+                                                                .toString())
+
+                                + "}";
         }
 
-        private static String timeEntryToJson(TimeEntry entry) {
-                return "{" +
-                                "\"entryId\":" + entry.getEntryId() + "," +
-                                "\"userId\":" + entry.getUserId() + "," +
-                                "\"goalId\":" + entry.getGoalId() + "," +
-                                "\"startTime\":" + jsonString(entry.getStartTime().toString()) + "," +
-                                "\"endTime\":" + jsonString(entry.getEndTime().toString()) + "," +
-                                "\"durationMinutes\":" + entry.getDurationMinutes() +
-                                "}";
+        private static String timeEntryToJson(
+                        TimeEntry entry) {
+
+                return "{"
+                                + "\"entryId\":"
+                                + entry.getEntryId()
+                                + ","
+
+                                + "\"userId\":"
+                                + entry.getUserId()
+                                + ","
+
+                                + "\"goalId\":"
+                                + entry.getGoalId()
+                                + ","
+
+                                + "\"startTime\":"
+                                + jsonString(
+                                                entry.getStartTime()
+                                                                .toString())
+                                + ","
+
+                                + "\"endTime\":"
+                                + jsonString(
+                                                entry.getEndTime()
+                                                                .toString())
+                                + ","
+
+                                + "\"durationMinutes\":"
+                                + entry.getDurationMinutes()
+
+                                + "}";
         }
 
-        private static String timeEntriesToJson(List<TimeEntry> entries) {
+        private static String timeEntriesToJson(
+                        List<TimeEntry> entries) {
 
                 StringBuilder json = new StringBuilder("[");
 
                 for (int i = 0; i < entries.size(); i++) {
+
                         if (i > 0) {
                                 json.append(',');
                         }
-                        json.append(timeEntryToJson(entries.get(i)));
+
+                        json.append(
+                                        timeEntryToJson(
+                                                        entries.get(i)));
                 }
 
-                return json.append(']').toString();
+                return json
+                                .append(']')
+                                .toString();
         }
 
-        private static String goalParameterToJson(GoalParameter parameter) {
+        private static String goalParameterToJson(
+                        GoalParameter parameter) {
 
                 String createdBy = parameter.getCreatedBy() == null
                                 ? "null"
-                                : String.valueOf(parameter.getCreatedBy());
+                                : String.valueOf(
+                                                parameter.getCreatedBy());
 
-                return "{" +
-                                "\"parameterId\":" + parameter.getParameterId() + "," +
-                                "\"goalType\":" + jsonString(parameter.getGoalType()) + "," +
-                                "\"trackingMetric\":" + jsonString(parameter.getTrackingMetric()) + "," +
-                                "\"targetUnit\":" + jsonString(parameter.getTargetUnit()) + "," +
-                                "\"createdBy\":" + createdBy + "," +
-                                "\"createdAt\":" + jsonString(parameter.getCreatedAt().toString()) +
-                                "}";
+                return "{"
+                                + "\"parameterId\":"
+                                + parameter.getParameterId()
+                                + ","
+
+                                + "\"goalType\":"
+                                + jsonString(
+                                                parameter.getGoalType())
+                                + ","
+
+                                + "\"trackingMetric\":"
+                                + jsonString(
+                                                parameter.getTrackingMetric())
+                                + ","
+
+                                + "\"targetUnit\":"
+                                + jsonString(
+                                                parameter.getTargetUnit())
+                                + ","
+
+                                + "\"createdBy\":"
+                                + createdBy
+                                + ","
+
+                                + "\"createdAt\":"
+                                + jsonString(
+                                                parameter.getCreatedAt()
+                                                                .toString())
+
+                                + "}";
         }
 
-        private static String goalParametersToJson(List<GoalParameter> parameters) {
+        private static String goalParametersToJson(
+                        List<GoalParameter> parameters) {
 
                 StringBuilder json = new StringBuilder("[");
 
                 for (int i = 0; i < parameters.size(); i++) {
+
                         if (i > 0) {
                                 json.append(',');
                         }
-                        json.append(goalParameterToJson(parameters.get(i)));
+
+                        json.append(
+                                        goalParameterToJson(
+                                                        parameters.get(i)));
                 }
 
-                return json.append(']').toString();
+                return json
+                                .append(']')
+                                .toString();
         }
 
-        private static String jsonString(String value) {
+        /*
+         * JSON STRING ESCAPING
+         */
+
+        private static String escapeJson(
+                        String value) {
+
+                if (value == null) {
+                        return "";
+                }
+
+                return value
+                                .replace("\\", "\\\\")
+                                .replace("\"", "\\\"")
+                                .replace("\n", "\\n")
+                                .replace("\r", "\\r")
+                                .replace("\t", "\\t");
+        }
+
+        private static String jsonString(
+                        String value) {
 
                 if (value == null) {
                         return "null";
                 }
 
-                return "\"" + value
-                                .replace("\\", "\\\\")
-                                .replace("\"", "\\\"")
-                                .replace("\r", "\\r")
-                                .replace("\n", "\\n")
-                                .replace("\t", "\\t")
+                return "\""
+                                + escapeJson(value)
                                 + "\"";
         }
 
@@ -1134,7 +2151,9 @@ public class WebServer {
          * CONTENT TYPES
          * ================================
          */
-        private static String getContentType(Path file) {
+
+        private static String getContentType(
+                        Path file) {
 
                 String name = file.getFileName()
                                 .toString()
@@ -1160,7 +2179,9 @@ public class WebServer {
                         return "image/png";
                 }
 
-                if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
+                if (name.endsWith(".jpg")
+                                || name.endsWith(".jpeg")) {
+
                         return "image/jpeg";
                 }
 
