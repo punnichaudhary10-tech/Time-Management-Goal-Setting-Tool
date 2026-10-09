@@ -1,594 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>My Goals | TimeTrack</title>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link rel="stylesheet" href="../css/goals.css">
 </head>
 
 <body>
 
-<div class="app">
+    <div class="app">
 
-    <!-- ================= SIDEBAR ================= -->
-    <aside class="sidebar">
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
 
-        <div class="brand">
-            <div class="brand-icon">
-                <i class="fa-solid fa-clock"></i>
-            </div>
-
-            <div>
-                <h2>TimeTrack</h2>
-                <span>Goal & Time Manager</span>
-            </div>
-        </div>
-
-        <div class="menu-title">MAIN MENU</div>
-
-        <nav class="navigation">
-
-            <a href="dashboard.html" class="nav-item">
-                <i class="fa-solid fa-grid-2"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="goals.html" class="nav-item active">
-                <i class="fa-solid fa-bullseye"></i>
-                <span>My Goals</span>
-            </a>
-
-            <a href="time-tracking.html" class="nav-item">
-                <i class="fa-solid fa-stopwatch"></i>
-                <span>Time Tracking</span>
-            </a>
-
-            <a href="progress.html" class="nav-item">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Progress</span>
-            </a>
-
-            <a href="profile.html" class="nav-item">
-                <i class="fa-solid fa-user"></i>
-                <span>Profile</span>
-            </a>
-
-        </nav>
-
-        <div class="sidebar-bottom">
-
-            <a href="index.html" class="nav-item logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- ================= MAIN ================= -->
-    <main class="main-content">
-
-        <!-- HEADER -->
-        <header class="top-header">
-
-            <div>
-                <h1>My Goals</h1>
-                <p>Set clear goals and stay focused on what matters.</p>
-            </div>
-
-            <div class="header-right">
-
-                <button class="notification">
-                    <i class="fa-regular fa-bell"></i>
-                    <span></span>
-                </button>
-
-                <div class="profile-mini">
-                    <div class="avatar">P</div>
-
-                    <div>
-                        <strong>Palak</strong>
-                        <small>User</small>
-                    </div>
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-clock"></i>
                 </div>
 
+                <div>
+                    <h2>TimeTrack</h2>
+                    <span>Goal & Time Manager</span>
+                </div>
             </div>
 
-        </header>
+            <div class="menu-title">MAIN MENU</div>
 
+            <nav class="navigation">
 
-        <!-- ================= STATS ================= -->
-        <section class="stats-grid">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fa-solid fa-grid-2"></i>
+                    <span>Dashboard</span>
+                </a>
 
-            <div class="stat-card">
-                <div class="stat-icon purple">
+                <a href="goals.html" class="nav-item active">
                     <i class="fa-solid fa-bullseye"></i>
-                </div>
+                    <span>My Goals</span>
+                </a>
 
-                <div>
-                    <span>Total Goals</span>
-                    <h3>08</h3>
-                </div>
+                <a href="time-tracking.html" class="nav-item">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Time Tracking</span>
+                </a>
+
+                <a href="progress.html" class="nav-item">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Progress</span>
+                </a>
+
+                <a href="profile.html" class="nav-item">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a href="index.html" class="nav-item logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+
             </div>
 
-
-            <div class="stat-card">
-                <div class="stat-icon blue">
-                    <i class="fa-solid fa-spinner"></i>
-                </div>
-
-                <div>
-                    <span>Active Goals</span>
-                    <h3>04</h3>
-                </div>
-            </div>
+        </aside>
 
 
-            <div class="stat-card">
-                <div class="stat-icon green">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
+        <!-- ================= MAIN ================= -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header class="top-header">
 
                 <div>
-                    <span>Completed</span>
-                    <h3>03</h3>
-                </div>
-            </div>
-
-
-            <div class="stat-card">
-                <div class="stat-icon orange">
-                    <i class="fa-solid fa-calendar-day"></i>
+                    <h1>My Goals</h1>
+                    <p>Set clear goals and stay focused on what matters.</p>
                 </div>
 
-                <div>
-                    <span>Due Soon</span>
-                    <h3>02</h3>
-                </div>
-            </div>
+                <div class="header-right">
 
-        </section>
-
-
-        <!-- ================= MAIN GRID ================= -->
-        <section class="goal-layout">
-
-            <!-- CREATE GOAL -->
-            <div class="card create-card">
-
-                <div class="card-heading">
-                    <div>
-                        <h2>Create New Goal</h2>
-                        <p>Define a goal and start working towards it.</p>
-                    </div>
-
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-
-
-                <form>
-
-                    <div class="form-group">
-                        <label>Goal Name</label>
-                        <input type="text"
-                               placeholder="e.g. Complete Java Project">
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Description</label>
-
-                        <textarea rows="3"
-                                  placeholder="Describe your goal..."></textarea>
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-                            <label>Goal Type</label>
-
-                            <select>
-                                <option>Academic</option>
-                                <option>Personal</option>
-                                <option>Fitness</option>
-                                <option>Career</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label>Priority</label>
-
-                            <select>
-                                <option>High</option>
-                                <option>Medium</option>
-                                <option>Low</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-                            <label>Target</label>
-
-                            <input type="number"
-                                   placeholder="e.g. 100">
-                        </div>
-
-
-                        <div class="form-group">
-                            <label>Deadline</label>
-
-                            <input type="date">
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Expected Time</label>
-
-                        <input type="text"
-                               placeholder="e.g. 20 hours">
-                    </div>
-
-
-                    <button type="submit" class="create-btn">
-                        <i class="fa-solid fa-plus"></i>
-                        Create Goal
+                    <button class="notification">
+                        <i class="fa-regular fa-bell"></i>
+                        <span></span>
                     </button>
 
-                </form>
+                    <div class="profile-mini">
+                        <div class="avatar">P</div>
 
-            </div>
+                        <div>
+                            <strong>Palak</strong>
+                            <small>User</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
 
 
-            <!-- TIPS -->
-            <div class="card tips-card">
+            <!-- ================= STATS ================= -->
+            <section class="stats-grid">
 
-                <div class="card-heading">
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+
                     <div>
-                        <h2>Goal Planning</h2>
-                        <p>Small improvements lead to bigger results.</p>
+                        <span>Total Goals</span>
+                        <h3>08</h3>
                     </div>
                 </div>
 
 
-                <div class="tip-list">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>
 
-                    <div class="tip">
-                        <div class="tip-icon">
-                            <i class="fa-solid fa-bullseye"></i>
+                    <div>
+                        <span>Active Goals</span>
+                        <h3>04</h3>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Completed</span>
+                        <h3>03</h3>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+
+                    <div>
+                        <span>Due Soon</span>
+                        <h3>02</h3>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ================= MAIN GRID ================= -->
+            <section class="goal-layout">
+
+                <!-- CREATE GOAL -->
+                <div class="card create-card">
+
+                    <div class="card-heading">
+                        <div>
+                            <h2>Create New Goal</h2>
+                            <p>Define a goal and start working towards it.</p>
+                        </div>
+
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+
+
+                    <form id="createGoalForm">
+
+                        <div class="form-group">
+                            <label>Goal Name</label>
+                            <input type="text" id="goalName" name="goalName" placeholder="e.g. Complete Java Project"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Description</label>
+
+                            <textarea id="description" name="description" rows="3" placeholder="Describe your goal..."
+                                required></textarea>
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+                                <label>Goal Type</label>
+
+                                <select>
+                                    <option>Academic</option>
+                                    <option>Personal</option>
+                                    <option>Fitness</option>
+                                    <option>Career</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Priority</label>
+
+                                <select>
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+                                <label>Target</label>
+
+                                <input type="number" id="target" name="target" min="0" step="any" placeholder="e.g. 100"
+                                    required>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Deadline</label>
+
+                                <input type="date" id="deadline" name="deadline" required>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Expected Time</label>
+
+                            <input type="text" placeholder="e.g. 20 hours">
+                        </div>
+
+
+                        <button type="submit" class="create-btn">
+                            <i class="fa-solid fa-plus"></i>
+                            Create Goal
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- TIPS -->
+                <div class="card tips-card">
+
+                    <div class="card-heading">
+                        <div>
+                            <h2>Goal Planning</h2>
+                            <p>Small improvements lead to bigger results.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="tip-list">
+
+                        <div class="tip">
+                            <div class="tip-icon">
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+
+                            <div>
+                                <strong>Be Specific</strong>
+                                <p>
+                                    Define exactly what you want to accomplish.
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="tip">
+                            <div class="tip-icon">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+
+                            <div>
+                                <strong>Set a Deadline</strong>
+                                <p>
+                                    Give every goal a realistic completion date.
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="tip">
+                            <div class="tip-icon">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+
+                            <div>
+                                <strong>Track Progress</strong>
+                                <p>
+                                    Review your progress regularly and stay consistent.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= GOALS TABLE ================= -->
+            <section class="card goals-section">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Current Goals</h2>
+                        <p>Track and manage your active goals.</p>
+                    </div>
+
+                    <button class="view-btn">
+                        View All
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>GOAL</th>
+                                <th>TYPE</th>
+                                <th>PROGRESS</th>
+                                <th>DEADLINE</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <div class="goal-title">
+                                        <strong>Complete Java Project</strong>
+                                        <span>Build the complete web application</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="type-badge">Academic</span>
+                                </td>
+
+                                <td>
+
+                                    <div class="progress-info">
+                                        <span>78%</span>
+                                    </div>
+
+                                    <div class="progress-bar">
+                                        <div style="width:78%"></div>
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <strong>15 Oct 2026</strong>
+                                </td>
+
+                                <td>
+                                    <span class="status active-status">
+                                        Active
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <button>
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <div class="goal-title">
+                                        <strong>Learn JavaScript</strong>
+                                        <span>Improve frontend development skills</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="type-badge">Career</span>
+                                </td>
+
+                                <td>
+
+                                    <div class="progress-info">
+                                        <span>62%</span>
+                                    </div>
+
+                                    <div class="progress-bar">
+                                        <div style="width:62%"></div>
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <strong>22 Oct 2026</strong>
+                                </td>
+
+                                <td>
+                                    <span class="status active-status">
+                                        Active
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <button>
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <div class="goal-title">
+                                        <strong>Daily Exercise</strong>
+                                        <span>Maintain a consistent workout routine</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="type-badge">Fitness</span>
+                                </td>
+
+                                <td>
+
+                                    <div class="progress-info">
+                                        <span>100%</span>
+                                    </div>
+
+                                    <div class="progress-bar">
+                                        <div style="width:100%"></div>
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <strong>Completed</strong>
+                                </td>
+
+                                <td>
+                                    <span class="status completed-status">
+                                        Completed
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <button>
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= UPCOMING ================= -->
+            <section class="card deadlines">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Upcoming Deadlines</h2>
+                        <p>Stay ahead of your upcoming targets.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="deadline-grid">
+
+                    <div class="deadline">
+
+                        <div class="deadline-date">
+                            <strong>15</strong>
+                            <span>OCT</span>
                         </div>
 
                         <div>
-                            <strong>Be Specific</strong>
-                            <p>
-                                Define exactly what you want to accomplish.
-                            </p>
+                            <strong>Complete Java Project</strong>
+                            <p>7 days remaining</p>
                         </div>
+
+                        <span class="priority high">
+                            High
+                        </span>
+
                     </div>
 
 
-                    <div class="tip">
-                        <div class="tip-icon">
-                            <i class="fa-solid fa-calendar-check"></i>
-                        </div>
+                    <div class="deadline">
 
-                        <div>
-                            <strong>Set a Deadline</strong>
-                            <p>
-                                Give every goal a realistic completion date.
-                            </p>
-                        </div>
-                    </div>
-
-
-                    <div class="tip">
-                        <div class="tip-icon">
-                            <i class="fa-solid fa-chart-line"></i>
+                        <div class="deadline-date">
+                            <strong>22</strong>
+                            <span>OCT</span>
                         </div>
 
                         <div>
-                            <strong>Track Progress</strong>
-                            <p>
-                                Review your progress regularly and stay consistent.
-                            </p>
+                            <strong>Learn JavaScript</strong>
+                            <p>14 days remaining</p>
                         </div>
+
+                        <span class="priority medium">
+                            Medium
+                        </span>
+
+                    </div>
+
+
+                    <div class="deadline">
+
+                        <div class="deadline-date">
+                            <strong>30</strong>
+                            <span>OCT</span>
+                        </div>
+
+                        <div>
+                            <strong>Read 5 Books</strong>
+                            <p>22 days remaining</p>
+                        </div>
+
+                        <span class="priority low">
+                            Low
+                        </span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </section>
 
-        </section>
 
+            <footer>
+                © 2026 TimeTrack · Time Management & Goal Setting Tool
+            </footer>
 
-        <!-- ================= GOALS TABLE ================= -->
-        <section class="card goals-section">
+        </main>
 
-            <div class="section-header">
+    </div>
 
-                <div>
-                    <h2>Current Goals</h2>
-                    <p>Track and manage your active goals.</p>
-                </div>
-
-                <button class="view-btn">
-                    View All
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-
-            </div>
-
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-                    <tr>
-                        <th>GOAL</th>
-                        <th>TYPE</th>
-                        <th>PROGRESS</th>
-                        <th>DEADLINE</th>
-                        <th>STATUS</th>
-                        <th>ACTION</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-
-                    <tr>
-
-                        <td>
-                            <div class="goal-title">
-                                <strong>Complete Java Project</strong>
-                                <span>Build the complete web application</span>
-                            </div>
-                        </td>
-
-                        <td>
-                            <span class="type-badge">Academic</span>
-                        </td>
-
-                        <td>
-
-                            <div class="progress-info">
-                                <span>78%</span>
-                            </div>
-
-                            <div class="progress-bar">
-                                <div style="width:78%"></div>
-                            </div>
-
-                        </td>
-
-                        <td>
-                            <strong>15 Oct 2026</strong>
-                        </td>
-
-                        <td>
-                            <span class="status active-status">
-                                Active
-                            </span>
-                        </td>
-
-                        <td>
-                            <div class="actions">
-                                <button>
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-
-                                <button>
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <div class="goal-title">
-                                <strong>Learn JavaScript</strong>
-                                <span>Improve frontend development skills</span>
-                            </div>
-                        </td>
-
-                        <td>
-                            <span class="type-badge">Career</span>
-                        </td>
-
-                        <td>
-
-                            <div class="progress-info">
-                                <span>62%</span>
-                            </div>
-
-                            <div class="progress-bar">
-                                <div style="width:62%"></div>
-                            </div>
-
-                        </td>
-
-                        <td>
-                            <strong>22 Oct 2026</strong>
-                        </td>
-
-                        <td>
-                            <span class="status active-status">
-                                Active
-                            </span>
-                        </td>
-
-                        <td>
-                            <div class="actions">
-                                <button>
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-
-                                <button>
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <div class="goal-title">
-                                <strong>Daily Exercise</strong>
-                                <span>Maintain a consistent workout routine</span>
-                            </div>
-                        </td>
-
-                        <td>
-                            <span class="type-badge">Fitness</span>
-                        </td>
-
-                        <td>
-
-                            <div class="progress-info">
-                                <span>100%</span>
-                            </div>
-
-                            <div class="progress-bar">
-                                <div style="width:100%"></div>
-                            </div>
-
-                        </td>
-
-                        <td>
-                            <strong>Completed</strong>
-                        </td>
-
-                        <td>
-                            <span class="status completed-status">
-                                Completed
-                            </span>
-                        </td>
-
-                        <td>
-                            <div class="actions">
-                                <button>
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= UPCOMING ================= -->
-        <section class="card deadlines">
-
-            <div class="section-header">
-
-                <div>
-                    <h2>Upcoming Deadlines</h2>
-                    <p>Stay ahead of your upcoming targets.</p>
-                </div>
-
-            </div>
-
-
-            <div class="deadline-grid">
-
-                <div class="deadline">
-
-                    <div class="deadline-date">
-                        <strong>15</strong>
-                        <span>OCT</span>
-                    </div>
-
-                    <div>
-                        <strong>Complete Java Project</strong>
-                        <p>7 days remaining</p>
-                    </div>
-
-                    <span class="priority high">
-                        High
-                    </span>
-
-                </div>
-
-
-                <div class="deadline">
-
-                    <div class="deadline-date">
-                        <strong>22</strong>
-                        <span>OCT</span>
-                    </div>
-
-                    <div>
-                        <strong>Learn JavaScript</strong>
-                        <p>14 days remaining</p>
-                    </div>
-
-                    <span class="priority medium">
-                        Medium
-                    </span>
-
-                </div>
-
-
-                <div class="deadline">
-
-                    <div class="deadline-date">
-                        <strong>30</strong>
-                        <span>OCT</span>
-                    </div>
-
-                    <div>
-                        <strong>Read 5 Books</strong>
-                        <p>22 days remaining</p>
-                    </div>
-
-                    <span class="priority low">
-                        Low
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <footer>
-            © 2026 TimeTrack · Time Management & Goal Setting Tool
-        </footer>
-
-    </main>
-
-</div>
+    <script src="../js/goals.js"></script>
 
 </body>
+
 </html>

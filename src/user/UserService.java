@@ -140,4 +140,52 @@ public class UserService {
             }
         }
     }
+
+    public int getUserIdByEmail(String email) {
+
+        String sql = "SELECT user_id FROM users WHERE email = ? LIMIT 1";
+
+        try (Connection connection = DBConnection.getConnection()) {
+
+            if (connection == null) {
+                return -1;
+            }
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, email.trim());
+
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        return result.getInt("user_id");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("User ID lookup failed: " + e.getMessage());
+        }
+
+        return -1;
+    }
+
+    public boolean emailExists(String email) {
+        String sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";
+
+        try (Connection connection = DBConnection.getConnection()) {
+            if (connection == null) {
+                return false;
+            }
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, email.trim());
+
+                try (ResultSet result = statement.executeQuery()) {
+                    return result.next();
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Email check failed: " + e.getMessage());
+            return false;
+        }
+    }
 }

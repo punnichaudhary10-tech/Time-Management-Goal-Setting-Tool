@@ -1,34 +1,39 @@
+
 const loginForm = document.querySelector("form");
 
-loginForm.addEventListener("submit", function (event) {
+if (loginForm) {
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-    event.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+                    email: email,
+                    password: password
+                })
+            });
 
-    fetch("/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body:
-            `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-        .then(response => response.text())
-        .then(data => {
+            const data = await response.text();
 
             console.log("Java response:", data);
 
-            if (data === "Login Successful") {
+            if (response.ok && data.trim() === "Login Successful") {
+                localStorage.setItem("loggedInEmail", email);
                 window.location.href = "dashboard.html";
             } else {
-                alert(data);
+                alert(data || "Login failed");
             }
-        })
-        .catch(error => {
 
+        } catch (error) {
             console.error("Login error:", error);
             alert("Unable to connect to the server.");
-        });
-});
+        }
+    });
+}
